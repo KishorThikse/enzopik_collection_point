@@ -1,0 +1,80 @@
+<div class="oil-orders-container">
+  <!-- Hide header when showOnlyTable is true -->
+  <div class="header" *ngIf="!showOnlyTable">
+    <h2>Oil Orders</h2>
+    <p class="subtitle">Track orders health and progress across teams.</p>
+  </div>
+
+  <div class="table-wrapper">
+    <!-- Hide search and filter when showOnlyTable is true -->
+    <div class="table-controls" *ngIf="!showOnlyTable">
+      <div class="search-box">
+        <span class="search-icon"><img src="assets/svg/search.svg"></span>
+        <input type="text" placeholder="Representative Name" [(ngModel)]="searchText">
+      </div>
+      <div class="filter-spacer"></div>
+      <button class="filter-btn">Filter <span class="filter-icon"><img src="assets/svg/filter.svg"></span></button>
+    </div>
+
+    <!-- Always show the table -->
+    <div class="table-container">
+      <table class="orders-table">
+        <thead>
+          <tr>
+            <th>Restaurant(FBO) Name</th>
+            <th>Oil Type</th>
+            <th>Quantity</th>
+            <th>Amount</th>
+            <th>Assigned To</th>
+            <th>Date</th>
+            <th>Hub Name</th>
+            <th>Status</th>
+            <th>View</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of orders">
+            <td data-label="Representative Name">
+              <span class="expand-icon"></span>
+              <span>{{ order.repName }}</span>
+            </td>
+            <td data-label="Oil Type">{{ order.oilType }}</td>
+            <td data-label="Country">{{ order.country }}</td>
+            <td data-label="Amount">₹{{ order.amount }}</td>
+            <td data-label="Ordered By">
+              <div class="user-info">
+                <img [src]="order.orderedBy.avatar" [alt]="order.orderedBy.name" class="avatar">
+                <span>{{ order.orderedBy.name }}</span>
+              </div>
+            </td>
+            <td data-label="Date">{{ order.date }}</td>
+            <td data-label="Unit Name">{{ order.unitName }}</td>
+            <td data-label="Status">
+              <span class="status-badge" [ngClass]="getStatusClass(order.status)">
+                {{ order.status }}
+              </span>
+            </td>
+            <td data-label="View" class="view-cell">
+              <button class="view-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="24" height="24" rx="5" fill="white"/>
+                  <rect x="0.5" y="0.5" width="23" height="23" rx="4.5" stroke="#020204" stroke-opacity="0.08"/>
+                  <path d="M10.3999 16L14.3999 12L10.3999 8" stroke="#625F6E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Hide pagination when showOnlyTable is true -->
+    <div class="pagination" *ngIf="!showOnlyTable">
+      <span class="page-info">Page 1 of 10</span>
+      <div class="pagination-controls">
+        <button class="pagination-btn">Previous</button>
+        <button class="pagination-btn">Next</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,226 @@
+<div class="dashboard-container">
+  <!-- Top Section: Stats Cards and Chart -->
+  <div class="top-section">
+    <!-- Stats Cards - Left Side (2x2 Grid) -->
+    <div class="stats-cards-wrapper">
+      <!-- Total Applied Card -->
+      <div class="stat-card">
+        <div class="card-icon">
+      <svg width="56" height="57" viewBox="0 0 56 57" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect y="0.5" width="56" height="56" rx="28" fill="#F8F8F8"/>
+      <path d="M36 30.5C36 34.9183 32.4183 38.5 28 38.5C23.5817 38.5 20 34.9183 20 30.5C20 29.4391 20.2065 28.4264 20.5815 27.5C21.7683 24.5682 28 18.5 28 18.5C28 18.5 34.2317 24.5682 35.4185 27.5C35.7935 28.4264 36 29.4391 36 30.5Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+        </div>
+        <div class="card-content">
+          <div>
+            <h3 class="card-value">{{ stats.totalApplied | number }} KG</h3>
+            <span class="card-trend positive">{{ stats.totalAppliedChange }}</span>
+          </div>
+          <p class="card-label">Total Applied</p>
+        </div>
+      </div>
+
+      <!-- Shortlisted Candidates Card -->
+      <div class="stat-card">
+        <div class="card-icon">
+     <svg width="56" height="57" viewBox="0 0 56 57" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect y="0.5" width="56" height="56" rx="28" fill="#F8F8F8"/>
+      <path d="M23.5 27.5H20.6C20.0399 27.5 19.7599 27.5 19.546 27.609C19.3579 27.7049 19.2049 27.8578 19.109 28.046C19 28.2599 19 28.5399 19 29.1V37.5M32.5 27.5H35.4C35.9601 27.5 36.2401 27.5 36.454 27.609C36.6422 27.7049 36.7951 27.8578 36.891 28.046C37 28.2599 37 28.5399 37 29.1V37.5M32.5 37.5V22.7C32.5 21.5799 32.5 21.0198 32.282 20.592C32.0903 20.2157 31.7843 19.9097 31.408 19.718C30.9802 19.5 30.4201 19.5 29.3 19.5H26.7C25.5799 19.5 25.0198 19.5 24.592 19.718C24.2157 19.9097 23.9097 20.2157 23.718 20.592C23.5 21.0198 23.5 21.5799 23.5 22.7V37.5M38 37.5H18M27 23.5H29M27 27.5H29M27 31.5H29" stroke="#111827" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+        </div>
+        <div class="card-content">
+          <div>
+            <h3 class="card-value">{{ stats.shortlisted | number }}</h3>
+            <span class="card-trend positive">{{ stats.shortlistedChange }}</span>
+          </div>
+          <p class="card-label">Shortlisted Candidates</p>
+        </div>
+      </div>
+
+      <!-- Holded Candidates Card -->
+      <div class="stat-card">
+        <div class="card-icon">
+        <svg width="56" height="57" viewBox="0 0 56 57" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect y="0.5" width="56" height="56" rx="28" fill="#F8F8F8"/>
+        <path d="M31 37.5V32.1C31 31.5399 31 31.2599 30.891 31.046C30.7951 30.8578 30.6422 30.7049 30.454 30.609C30.2401 30.5 29.9601 30.5 29.4 30.5H26.6C26.0399 30.5 25.7599 30.5 25.546 30.609C25.3579 30.7049 25.2049 30.8578 25.109 31.046C25 31.2599 25 31.5399 25 32.1V37.5M19 23.5C19 25.1568 20.3432 26.5 22 26.5C23.6568 26.5 25 25.1568 25 23.5C25 25.1568 26.3431 26.5 28 26.5C29.6569 26.5 31 25.1568 31 23.5C31 25.1568 32.3431 26.5 34 26.5C35.6569 26.5 37 25.1568 37 23.5M22.2 37.5H33.8C34.9201 37.5 35.4802 37.5 35.908 37.282C36.2843 37.0903 36.5903 36.7843 36.782 36.408C37 35.9802 37 35.4201 37 34.3V22.7C37 21.5799 37 21.0198 36.782 20.592C36.5903 20.2157 36.2843 19.9097 35.908 19.718C35.4802 19.5 34.9201 19.5 33.8 19.5H22.2C21.0799 19.5 20.5198 19.5 20.092 19.718C19.7157 19.9097 19.4097 20.2157 19.218 20.592C19 21.0198 19 21.5799 19 22.7V34.3C19 35.4201 19 35.9802 19.218 36.408C19.4097 36.7843 19.7157 37.0903 20.092 37.282C20.5198 37.5 21.0799 37.5 22.2 37.5Z" stroke="#111827" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        </div>
+        <div class="card-content">
+          <div>
+            <h3 class="card-value">{{ stats.holded | number }}</h3>
+            <span class="card-trend positive">{{ stats.holdedChange }}</span>
+          </div>
+          <p class="card-label">Holded Candidates</p>
+        </div>
+      </div>
+
+      <!-- Rejected Candidates Card -->
+      <div class="stat-card">
+        <div class="card-icon">
+        <svg width="56" height="57" viewBox="0 0 56 57" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect y="0.5" width="56" height="56" rx="28" fill="#F8F8F8"/>
+        <path d="M36 37.5C36 36.1044 36 35.4067 35.8278 34.8389C35.44 33.5605 34.4395 32.56 33.1611 32.1722C32.5933 32 31.8956 32 30.5 32H25.5C24.1044 32 23.4067 32 22.8389 32.1722C21.5605 32.56 20.56 33.5605 20.1722 34.8389C20 35.4067 20 36.1044 20 37.5M32.5 24C32.5 26.4853 30.4853 28.5 28 28.5C25.5147 28.5 23.5 26.4853 23.5 24C23.5 21.5147 25.5147 19.5 28 19.5C30.4853 19.5 32.5 21.5147 32.5 24Z" stroke="#111827" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        </div>
+        <div class="card-content">
+          <div>
+            <h3 class="card-value">{{ stats.rejected | number }}</h3>
+            <span class="card-trend positive">{{ stats.rejectedChange }}</span>
+          </div>
+          <p class="card-label">Rejected Candidates</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Oil Collection Chart - Right Side -->
+    <div class="chart-container">
+      <div class="chart-header">
+        <div>
+          <h2 class="chart-title">Oil Collection</h2>
+          <p class="chart-subtitle">Collected Oil Details</p>
+        </div>
+        <div class="chart-tabs">
+          <button 
+            class="tab-button" 
+            [class.active]="activeTab === 'today'"
+            (click)="setActiveTab('today')">
+            Today
+          </button>
+          <button 
+            class="tab-button" 
+            [class.active]="activeTab === 'monthly'"
+            (click)="setActiveTab('monthly')">
+            Monthly
+          </button>
+          <button 
+            class="tab-button" 
+            [class.active]="activeTab === 'yearly'"
+            (click)="setActiveTab('yearly')">
+            Yearly
+          </button>
+        </div>
+      </div>
+      <div id="revenueChart" class="highcharts-container"></div>
+    </div>
+  </div>
+
+  <!-- Bottom Section: Order List and Donut Chart -->
+  <div class="bottom-section">
+    <!-- Order List - Left Side -->
+    <div class="order-list-container">
+      <div class="order-list-header">
+        <div class="header-left">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="0.5" y="0.5" width="27" height="27" rx="7.5" fill="white"/>
+<rect x="0.5" y="0.5" width="27" height="27" rx="7.5" stroke="#E6E8EA"/>
+<path d="M19.7904 17.4423V10.557C19.8001 9.18637 18.7215 8.05513 17.3528 8C17.3528 8 11.7108 8 11.6907 8.00065C10.3091 8.03049 9.21354 9.17535 9.24403 10.557V17.5617C9.27646 18.9213 10.3908 20.0052 11.751 20L17.3437 19.9993C18.7253 19.9689 19.8202 18.824 19.7904 17.4423Z" stroke="#625F6E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12.7695 16.6242H17.3419M16.568 14.1538H17.3418" stroke="#625F6E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12.6016 12.8912L13.7471 14.0368L16.6245 11.1587" stroke="#625F6E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8.20972 17.1313H10.4268M8.20972 13.9989H10.4268M8.20972 10.8672H10.4268" stroke="#625F6E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+          <h3>Order List</h3>
+        </div>
+        <div class="header-right">
+          <select class="team-filter">
+            <option>All Teams</option>
+          </select>
+          <button class="filter-btn">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 0.5H32C36.1421 0.5 39.5 3.85786 39.5 8V32C39.5 36.1421 36.1421 39.5 32 39.5H8C3.85786 39.5 0.5 36.1421 0.5 32V8C0.5 3.85786 3.85786 0.5 8 0.5Z" fill="white"/>
+            <path d="M8 0.5H32C36.1421 0.5 39.5 3.85786 39.5 8V32C39.5 36.1421 36.1421 39.5 32 39.5H8C3.85786 39.5 0.5 36.1421 0.5 32V8C0.5 3.85786 3.85786 0.5 8 0.5Z" stroke="#E6E8EA"/>
+            <path d="M13.25 16.25H15.5" stroke="#625F6E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M13.25 23.75H17.75" stroke="#625F6E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M24.5 23.75L26.75 23.75" stroke="#625F6E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M22.25 16.25L26.75 16.25" stroke="#625F6E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M15.5 16.25C15.5 15.5511 15.5 15.2016 15.6142 14.926C15.7664 14.5584 16.0584 14.2664 16.426 14.1142C16.7016 14 17.0511 14 17.75 14C18.4489 14 18.7984 14 19.074 14.1142C19.4416 14.2664 19.7336 14.5584 19.8858 14.926C20 15.2016 20 15.5511 20 16.25C20 16.9489 20 17.2984 19.8858 17.574C19.7336 17.9416 19.4416 18.2336 19.074 18.3858C18.7984 18.5 18.4489 18.5 17.75 18.5C17.0511 18.5 16.7016 18.5 16.426 18.3858C16.0584 18.2336 15.7664 17.9416 15.6142 17.574C15.5 17.2984 15.5 16.9489 15.5 16.25Z" stroke="#625F6E" stroke-width="1.5"/>
+            <path d="M20 23.75C20 23.0511 20 22.7016 20.1142 22.426C20.2664 22.0584 20.5584 21.7664 20.926 21.6142C21.2016 21.5 21.5511 21.5 22.25 21.5C22.9489 21.5 23.2984 21.5 23.574 21.6142C23.9416 21.7664 24.2336 22.0584 24.3858 22.426C24.5 22.7016 24.5 23.0511 24.5 23.75C24.5 24.4489 24.5 24.7984 24.3858 25.074C24.2336 25.4416 23.9416 25.7336 23.574 25.8858C23.2984 26 22.9489 26 22.25 26C21.5511 26 21.2016 26 20.926 25.8858C20.5584 25.7336 20.2664 25.4416 20.1142 25.074C20 24.7984 20 24.4489 20 23.75Z" stroke="#625F6E" stroke-width="1.5"/>
+            </svg>
+
+          </button>
+        </div>
+      </div>
+
+      <div class="order-table-wrapper">
+        <table class="order-table">
+          <thead>
+            <tr>
+              <th>
+      <input type="checkbox" (change)="toggleAllOrderCheckboxes($event)" [checked]="allOrdersChecked">
+    </th>
+              <th>Restaurant/FBO</th>
+              <th>Oil Type</th>
+              <th>Quantity</th>
+              <th>Amount</th>
+              <th>Assigned To</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let order of orders">
+              <td>
+      <input type="checkbox" [(ngModel)]="order.selected" (change)="onOrderCheckboxChange()">
+    </td>
+              <td class="restaurant-name">{{ order.restaurant }}</td>
+              <td>{{ order.oilType }}</td>
+              <td>{{ order.quantity }}</td>
+              <td>{{ order.amount }}</td>
+              <td>
+                <div class="assigned-user">
+                  <img [src]="order.assignedTo.avatar" [alt]="order.assignedTo.name" class="user-avatar">
+                  <span>{{ order.assignedTo.name }}</span>
+                </div>
+              </td>
+              <td>{{ order.date }}</td>
+              <td>
+                <span class="status-badge" [ngClass]="order.status.toLowerCase()">
+                  {{ order.status }}
+                </span>
+              </td>
+              <td>
+                <button class="action-btn">
+                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="24" height="24" rx="5" fill="white"/>
+                <rect x="0.5" y="0.5" width="23" height="23" rx="4.5" stroke="#020204" stroke-opacity="0.08"/>
+                <path d="M10.3999 16L14.3999 12L10.3999 8" stroke="#625F6E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Donut Chart - Right Side -->
+    <div class="donut-chart-container">
+      <div class="donut-header">
+        <h3>Oil Chart</h3>
+        <button class="info-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="16" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+          </svg>
+        </button>
+      </div>
+      
+      <div id="donutChart" class="donut-chart"></div>
+
+      <div class="chart-legend">
+        <div class="legend-item" *ngFor="let item of donutData">
+          <div class="legend-color" [style.background-color]="item.color"></div>
+          <div class="legend-content">
+            <div class="legend-label">{{ item.label }} </div>
+            <div class="legend-stats">
+              <span class="legend-count">{{ item.count | number }} </span>
+              <span class="legend-percentage">{{ item.percentage }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

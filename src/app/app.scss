@@ -1,0 +1,24 @@
+// App Component Styles - Minimal, layout is now handled by sidenav component
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+// Mobile Responsive
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column;
+  }
+  
+  .main-content {
+    width: 100%;
+    margin-left: 0;
+  }
+}
