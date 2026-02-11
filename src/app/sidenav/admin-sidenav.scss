@@ -1,0 +1,212 @@
+.admin-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 260px;
+    background: #0f172a;
+    color: #94a3b8;
+    display: flex;
+    flex-direction: column;
+    z-index: 1001;
+    font-family: 'Rajdhani', sans-serif;
+
+    .sidebar-header {
+        padding: 32px 24px;
+
+        .admin-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            font-weight: 700;
+            font-size: 20px;
+            letter-spacing: 0.1em;
+
+            svg {
+                color: #00a86b;
+            }
+        }
+    }
+
+    .user-profile-mini {
+        margin: 0 16px 32px;
+        padding: 16px;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background: #00a86b;
+            color: white;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 700;
+        }
+
+        .info {
+            .name {
+                color: white;
+                font-size: 14px;
+                font-weight: 600;
+                margin: 0;
+            }
+
+            .role {
+                font-size: 11px;
+                color: #64748b;
+                margin: 2px 0 0;
+                text-transform: uppercase;
+                font-weight: 700;
+                letter-spacing: 0.05em;
+            }
+        }
+    }
+
+    .sidebar-nav {
+        flex: 1;
+        padding: 0 12px;
+
+        .nav-label {
+            padding: 0 12px 12px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: #94a3b8;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 4px;
+
+            svg {
+                opacity: 0.6;
+            }
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.05);
+                color: white;
+            }
+
+            &.active {
+                background: #00a86b;
+                color: white;
+
+                svg {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+
+    .sidebar-footer {
+        padding: 24px;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+
+        .logout-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background: transparent;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+
+            &:hover {
+                background: rgba(239, 68, 68, 0.1);
+            }
+        }
+    }
+}
+
+.admin-main-content {
+    margin-left: 260px;
+    height: 100vh;
+    overflow: hidden;
+    background: #f8fafc;
+    display: flex;
+    flex-direction: column;
+
+    .admin-top-bar {
+        height: 70px;
+        background: white;
+        border-bottom: 1px solid #e2e8f0;
+        padding: 0 32px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #94a3b8;
+
+            input {
+                border: none;
+                outline: none;
+                font-size: 14px;
+                width: 300px;
+                color: #1e293b;
+                font-family: 'Rajdhani', sans-serif;
+                font-weight: 500;
+            }
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+
+            .icon-btn {
+                background: none;
+                border: none;
+                color: #64748b;
+                cursor: pointer;
+
+                &:hover {
+                    color: #0f172a;
+                }
+            }
+
+            .divider {
+                width: 1px;
+                height: 24px;
+                background: #e2e8f0;
+            }
+
+            .date {
+                font-size: 13px;
+                font-weight: 700;
+                color: #64748b;
+            }
+        }
+    }
+
+    .scroll-area {
+        flex: 1;
+        overflow-y: auto;
+    }
+}

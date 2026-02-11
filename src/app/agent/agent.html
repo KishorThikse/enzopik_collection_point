@@ -1,124 +1,505 @@
 <div class="restaurant-container">
-  <!-- Hide header when showOnlyTable is true -->
-  <div class="header" *ngIf="!showOnlyTable">
-    <div class="header-left">
-      <h1 class="title">Agent</h1>
-      <p class="subtitle">Track project health and progress across teams.</p>
-    </div>
-    <div class="header-right">
-      <button class="btn-secondary">
-        <svg class="icon-share" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd" clip-rule="evenodd" d="M13.234 2.52002C14.3079 2.52002 15.178 3.39008 15.178 4.464C15.178 5.53791 14.3079 6.40798 13.234 6.40798C12.1601 6.40798 11.29 5.53791 11.29 4.464C11.29 3.39008 12.1601 2.52002 13.234 2.52002Z" stroke="#625F6E" stroke-width="1.44" stroke-linecap="round" stroke-linejoin="round"/>
-          <path fill-rule="evenodd" clip-rule="evenodd" d="M5.45814 7.05566C6.53205 7.05566 7.40212 7.92575 7.40212 8.99963C7.40212 10.0736 6.53205 10.9436 5.45814 10.9436C4.38422 10.9436 3.51416 10.0736 3.51416 8.99963C3.51416 7.92575 4.38422 7.05566 5.45814 7.05566Z" stroke="#625F6E" stroke-width="1.44" stroke-linecap="round" stroke-linejoin="round"/>
-          <path fill-rule="evenodd" clip-rule="evenodd" d="M13.234 11.5923C14.3079 11.5923 15.178 12.4623 15.178 13.5362C15.178 14.6094 14.3079 15.4802 13.234 15.4802C12.1601 15.4802 11.29 14.6094 11.29 13.5362C11.29 12.4623 12.1601 11.5923 13.234 11.5923Z" stroke="#625F6E" stroke-width="1.44" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M7.13594 9.97803L11.5619 12.5574M11.5549 5.44238L7.13525 8.02107" stroke="#625F6E" stroke-width="1.44" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        Share Portfolio
-      </button>
-      <button class="btn-primary">
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M9 3.75V14.25M3.75 9H14.25" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        Add Agent
-      </button>
-    </div>
-  </div>
-
-  <!-- Hide tabs when showOnlyTable is true -->
-  <div class="tabs" *ngIf="!showOnlyTable">
-    <button class="tab" [class.active]="activeTab === 'overall'" (click)="setActiveTab('overall')">
-      Over All Agent
-    </button>
-    <button class="tab" [class.active]="activeTab === 'onboarding'" (click)="setActiveTab('onboarding')">
-      Onboarding Agent
-    </button>
-  </div>
-
-  <!-- Table with integrated search, filter, and pagination -->
-  <div class="table-container">
-    <!-- Hide search and filter when showOnlyTable is true -->
-    <div class="table-header" *ngIf="!showOnlyTable">
-      <div class="search-box">
-        <svg width="15" height="16" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M7.10756 13.4651C10.4807 13.4651 13.2151 10.7307 13.2151 7.35756C13.2151 3.98445 10.4807 1.25 7.10756 1.25C3.73445 1.25 1 3.98445 1 7.35756C1 10.7307 3.73445 13.4651 7.10756 13.4651Z" stroke="#625F6E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M11.355 11.9229L13.7495 14.3111" stroke="#625F6E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <input type="text" placeholder="Agent Name..." [(ngModel)]="searchText" (input)="onSearch()">
+  <!-- Show table view when showProfileView is false -->
+  <div *ngIf="!showProfileView">
+    <!-- Hide header when showOnlyTable is true -->
+    <div class="header" *ngIf="!showOnlyTable">
+      <div class="header-left">
+        <h1 class="title">Agent</h1>
+        <p class="subtitle">Track project health and progress across teams.</p>
       </div>
-      <button class="filter-btn">
-        Filter
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M2.25 5.25L4.5 5.25" stroke="#625F6E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M2.25 12.75L6.75 12.75" stroke="#625F6E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M13.5 12.75L15.75 12.75" stroke="#625F6E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M11.25 5.25L15.75 5.25" stroke="#625F6E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M4.5 5.25C4.5 4.55109 4.5 4.20163 4.61418 3.92597C4.76642 3.55843 5.05843 3.26642 5.42597 3.11418C5.70163 3 6.05109 3 6.75 3C7.44891 3 7.79837 3 8.07403 3.11418C8.44157 3.26642 8.73358 3.55843 8.88582 3.92597C9 4.20163 9 4.55109 9 5.25C9 5.94891 9 6.29837 8.88582 6.57403C8.73358 6.94157 8.44157 7.23358 8.07403 7.38582C7.79837 7.5 7.44891 7.5 6.75 7.5C6.05109 7.5 5.70163 7.5 5.42597 7.38582C5.05843 7.23358 4.76642 6.94157 4.61418 6.57403C4.5 6.29837 4.5 5.94891 4.5 5.25Z" stroke="#625F6E" stroke-width="1.5"/>
-          <path d="M9 12.75C9 12.0511 9 11.7016 9.11418 11.426C9.26642 11.0584 9.55843 10.7664 9.92597 10.6142C10.2016 10.5 10.5511 10.5 11.25 10.5C11.9489 10.5 12.2984 10.5 12.574 10.6142C12.9416 10.7664 13.2336 11.0584 13.3858 11.426C13.5 11.7016 13.5 12.0511 13.5 12.75C13.5 13.4489 13.5 13.7984 13.3858 14.074C13.2336 14.4416 12.9416 14.7336 12.574 14.8858C12.2984 15 11.9489 15 11.25 15C10.5511 15 10.2016 15 9.92597 14.8858C9.55843 14.7336 9.26642 14.4416 9.11418 14.074C9 13.7984 9 13.4489 9 12.75Z" stroke="#625F6E" stroke-width="1.5"/>
-        </svg>
+      <div class="header-right">
+        <!-- <button class="btn-secondary">
+          <svg class="icon-share" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M13.234 2.52002C14.3079 2.52002 15.178 3.39008 15.178 4.464C15.178 5.53791 14.3079 6.40798 13.234 6.40798C12.1601 6.40798 11.29 5.53791 11.29 4.464C11.29 3.39008 12.1601 2.52002 13.234 2.52002Z" stroke="#625F6E" stroke-width="1.44" stroke-linecap="round" stroke-linejoin="round"/>
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M5.45814 7.05566C6.53205 7.05566 7.40212 7.92575 7.40212 8.99963C7.40212 10.0736 6.53205 10.9436 5.45814 10.9436C4.38422 10.9436 3.51416 10.0736 3.51416 8.99963C3.51416 7.92575 4.38422 7.05566 5.45814 7.05566Z" stroke="#625F6E" stroke-width="1.44" stroke-linecap="round" stroke-linejoin="round"/>
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M13.234 11.5923C14.3079 11.5923 15.178 12.4623 15.178 13.5362C15.178 14.6094 14.3079 15.4802 13.234 15.4802C12.1601 15.4802 11.29 14.6094 11.29 13.5362C11.29 12.4623 12.1601 11.5923 13.234 11.5923Z" stroke="#625F6E" stroke-width="1.44" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M7.13594 9.97803L11.5619 12.5574M11.5549 5.44238L7.13525 8.02107" stroke="#625F6E" stroke-width="1.44" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Share Portfolio
+        </button> -->
+        <button class="btn-primary" (click)="openAddModal()">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 3.75V14.25M3.75 9H14.25" stroke="white" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+          Add Agent
+        </button>
+      </div>
+    </div>
+
+    <!-- Hide tabs when showOnlyTable is true -->
+    <div class="tabs" *ngIf="!showOnlyTable">
+      <button class="tab" [class.active]="activeTab === 'overall'" (click)="setActiveTab('overall')">
+        Over All Agent
+      </button>
+      <button class="tab" [class.active]="activeTab === 'onboarding'" (click)="setActiveTab('onboarding')">
+        Onboarding Agent
       </button>
     </div>
 
-    <!-- Always show the table -->
-    <div class="container">
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th>Owner</th>
-            <th>Status</th>
-            <th>DOB</th>
-            <th>Age</th>
-            <th>Gender</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>License No</th>
-            <th>View</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let restaurant of filteredRestaurants">
-            <td>
-              <div class="owner-cell">
-                <div class="avatar">{{ getInitials(restaurant.owner) }}</div>
-                <span>{{ restaurant.owner }}</span>
-              </div>
-            </td>
-            <td>
-              <span class="status-badge" [ngClass]="getStatusClass(restaurant.status)">
-                <span class="status-dot"></span>
-                {{ restaurant.status }}
-              </span>
-            </td>
-            <td>{{ restaurant.dob }}</td>
-            <td>{{ restaurant.age }}</td>
-            <td>{{ restaurant.gender }}</td>
-            <td>{{ restaurant.email }}</td>
-            <td>{{ restaurant.phone }}</td>
-            <td>{{ restaurant.licenseNo }}</td>
-            <td>
-              <button class="action-btn">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect width="24" height="24" rx="5" fill="white"/>
-                  <rect x="0.5" y="0.5" width="23" height="23" rx="4.5" stroke="#020204" stroke-opacity="0.08"/>
-                  <path d="M10.3999 16L14.3999 12L10.3999 8" stroke="#625F6E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <!-- Table with integrated search, filter, and pagination -->
+    <div class="table-container" [class.embedded-mode]="showOnlyTable">
+      <!-- Hide search and filter when showOnlyTable is true -->
+      <div class="table-header" *ngIf="!showOnlyTable">
+        <div class="search-box">
+          <svg width="15" height="16" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M7.10756 13.4651C10.4807 13.4651 13.2151 10.7307 13.2151 7.35756C13.2151 3.98445 10.4807 1.25 7.10756 1.25C3.73445 1.25 1 3.98445 1 7.35756C1 10.7307 3.73445 13.4651 7.10756 13.4651Z"
+              stroke="#625F6E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M11.355 11.9229L13.7495 14.3111" stroke="#625F6E" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+          <input type="text" placeholder="Agent Name..." [(ngModel)]="searchText" (input)="onSearch()">
+        </div>
+        <button class="filter-btn">
+          Filter
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2.25 5.25L4.5 5.25" stroke="#625F6E" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round" />
+            <path d="M2.25 12.75L6.75 12.75" stroke="#625F6E" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round" />
+            <path d="M13.5 12.75L15.75 12.75" stroke="#625F6E" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round" />
+            <path d="M11.25 5.25L15.75 5.25" stroke="#625F6E" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round" />
+            <path
+              d="M4.5 5.25C4.5 4.55109 4.5 4.20163 4.61418 3.92597C4.76642 3.55843 5.05843 3.26642 5.42597 3.11418C5.70163 3 6.05109 3 6.75 3C7.44891 3 7.79837 3 8.07403 3.11418C8.44157 3.26642 8.73358 3.55843 8.88582 3.92597C9 4.20163 9 4.55109 9 5.25C9 5.94891 9 6.29837 8.88582 6.57403C8.73358 6.94157 8.44157 7.23358 8.07403 7.38582C7.79837 7.5 7.44891 7.5 6.75 7.5C6.05109 7.5 5.70163 7.5 5.42597 7.38582C5.05843 7.23358 4.76642 6.94157 4.61418 6.57403C4.5 6.29837 4.5 5.94891 4.5 5.25Z"
+              stroke="#625F6E" stroke-width="1.5" />
+            <path
+              d="M9 12.75C9 12.0511 9 11.7016 9.11418 11.426C9.26642 11.0584 9.55843 10.7664 9.92597 10.6142C10.2016 10.5 10.5511 10.5 11.25 10.5C11.9489 10.5 12.2984 10.5 12.574 10.6142C12.9416 10.7664 13.2336 11.0584 13.3858 11.426C13.5 11.7016 13.5 12.0511 13.5 12.75C13.5 13.4489 13.5 13.7984 13.3858 14.074C13.2336 14.4416 12.9416 14.7336 12.574 14.8858C12.2984 15 11.9489 15 11.25 15C10.5511 15 10.2016 15 9.92597 14.8858C9.55843 14.7336 9.26642 14.4416 9.11418 14.074C9 13.7984 9 13.4489 9 12.75Z"
+              stroke="#625F6E" stroke-width="1.5" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Always show the table -->
+      <div class="container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Owner</th>
+              <th>Status</th>
+              <th>DOB</th>
+              <th>Age</th>
+              <th>Gender</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>License No</th>
+              <th>View</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let restaurant of getCurrentPageItems()">
+              <td>
+                <div class="owner-cell">
+                  <div class="avatar">{{ getInitials(restaurant.owner) }}</div>
+                  <span>{{ restaurant.owner }}</span>
+                </div>
+              </td>
+              <td>
+                <span class="status-badge" [ngClass]="getStatusClass(restaurant.status)">
+                  <span class="status-dot"></span>
+                  {{ restaurant.status }}
+                </span>
+              </td>
+              <td>{{ restaurant.dob }}</td>
+              <td>{{ restaurant.age }}</td>
+              <td>{{ restaurant.gender }}</td>
+              <td>{{ restaurant.email }}</td>
+              <td>{{ restaurant.phone }}</td>
+              <td>{{ restaurant.licenseNo }}</td>
+              <td>
+                <button class="action-btn" (click)="viewAgentProfile(restaurant)">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="24" height="24" rx="5" fill="white" />
+                    <rect x="0.5" y="0.5" width="23" height="23" rx="4.5" stroke="#020204" stroke-opacity="0.08" />
+                    <path d="M10.3999 16L14.3999 12L10.3999 8" stroke="#625F6E" stroke-width="1.5"
+                      stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="filteredRestaurants.length === 0">
+              <td colspan="9" class="no-data">
+
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <!-- Always show pagination (even when showOnlyTable is true) -->
       <div class="table-footer">
         <span class="pagination-info">Page {{ currentPage }} of {{ totalPages }}</span>
         <div class="pagination-controls">
-          <button class="pagination-btn" [disabled]="currentPage === 1" (click)="previousPage()">
+          <button class="pagination-btn" (click)="previousPage()">
             Previous
           </button>
-          <button class="pagination-btn" [disabled]="currentPage === totalPages" (click)="nextPage()">
+          <button class="pagination-btn" (click)="nextPage()">
             Next
           </button>
         </div>
       </div>
+
+    </div>
+
+
+  </div>
+
+  <!-- Show profile view when showProfileView is true -->
+  <div *ngIf="showProfileView" class="profile-page-wrapper">
+    <!-- Profile page header - OUTSIDE the wrapper -->
+    <div class="profile-page-header">
+      <h2>Agent Profile</h2>
+      <p>Track project health and progress across teams.</p>
+    </div>
+
+    <div class="profile-wrapper">
+      <!-- Left Profile Section -->
+      <div class="profile-left">
+        <div class="profile-avatar-section">
+          <div class="profile-avatar"><img src="assets/svg/agent_profile.svg"></div>
+          <h3 class="profile-name">{{ selectedAgent?.owner }}</h3>
+          <p class="profile-email">{{ selectedAgent?.email }}</p>
+          <span class="profile-status-badge" [ngClass]="getStatusClass(selectedAgent?.status || '')">
+            <span class="status-dot"></span>
+            {{ selectedAgent?.status }}
+          </span>
+        </div>
+
+        <div class="profile-details">
+          <div class="detail-row">
+            <span class="detail-label">Age</span>
+            <input *ngIf="isEditingAgent" type="number" [(ngModel)]="selectedAgent!.age" class="edit-input">
+            <span *ngIf="!isEditingAgent" class="detail-value">{{ selectedAgent?.age }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Gender</span>
+            <input *ngIf="isEditingAgent" type="text" [(ngModel)]="selectedAgent!.gender" class="edit-input">
+            <span *ngIf="!isEditingAgent" class="detail-value">{{ selectedAgent?.gender }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Agent Id</span>
+            <span class="detail-value">1234</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Mobile Number</span>
+            <input *ngIf="isEditingAgent" type="text" [(ngModel)]="selectedAgent!.phone" class="edit-input">
+            <span *ngIf="!isEditingAgent" class="detail-value">{{ selectedAgent?.phone }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Agent Order Count</span>
+            <span class="detail-value">81</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Hub Name</span>
+            <span class="detail-value">Chennai Hub</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Incharge Name</span>
+            <span class="detail-value">John Doe</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Incharge Number</span>
+            <span class="detail-value">+91 98079 79564</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Country Code</span>
+            <span class="detail-value">IN</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Address</span>
+            <input *ngIf="isEditingAgent" type="text" [(ngModel)]="selectedAgent!.location" class="edit-input">
+            <span *ngIf="!isEditingAgent" class="detail-value">{{ selectedAgent?.location || 'N/A' }}</span>
+          </div>
+        </div>
+
+        <div class="agent-edit-actions">
+          <button *ngIf="!isEditingAgent" class="edit-profile-btn" (click)="toggleEditAgent()">
+            Edit Profile
+            <svg width="19" height="18" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M2.75 15.75H16.25M10.8383 3.98378C10.8383 3.98378 10.8383 5.20975 12.0643 6.43572C13.2902 7.66169 14.5162 7.66169 14.5162 7.66169M5.98972 13.4911L8.56425 13.1233C8.93562 13.0702 9.27977 12.8981 9.54503 12.6329L15.7422 6.43572C16.4193 5.75864 16.4193 4.66087 15.7422 3.98378L14.5162 2.75781C13.8391 2.08073 12.7414 2.08073 12.0643 2.75781L5.86712 8.95497C5.60186 9.22023 5.42979 9.56438 5.37674 9.93575L5.00894 12.5103C4.92721 13.0824 5.4176 13.5728 5.98972 13.4911Z"
+                stroke="white" stroke-width="1.5" stroke-linecap="round" />
+            </svg>
+          </button>
+
+          <div class="edit-mode-actions" *ngIf="isEditingAgent">
+            <button class="save-agent-btn" (click)="saveAgentProfile()" [disabled]="savingAgent">
+              {{ savingAgent ? 'Saving...' : 'Save Profile' }}
+            </button>
+            <button class="cancel-agent-btn" (click)="toggleEditAgent()" [disabled]="savingAgent">
+              Cancel
+            </button>
+          </div>
+        </div>
+
+        <div class="agent-validation-errors" *ngIf="validationErrors.length > 0">
+          <p *ngFor="let error of validationErrors" class="error-msg">{{ error }}</p>
+        </div>
+      </div>
+
+      <!-- Right Order List Section -->
+      <div class="profile-right">
+        <!-- Tabs for Profile Details -->
+        <div class="profile-tabs">
+          <button class="profile-tab" [class.active]="profileActiveTab === 'orders'" (click)="setProfileTab('orders')">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M5.25 4.5H12.75M5.25 9H12.75M5.25 13.5H9.75M2.25 2.25V15.75C2.25 16.1642 2.58579 16.5 3 16.5H15C15.4142 16.5 15.75 16.1642 15.75 15.75V2.25C15.75 1.83579 15.4142 1.5 15H3C2.58579 1.5 2.25 1.83579 2.25 2.25Z"
+                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+            </svg>
+            Order List
+          </button>
+          <button class="profile-tab" [class.active]="profileActiveTab === 'rejected'"
+            (click)="setProfileTab('rejected')">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M13.5 4.5L4.5 13.5M4.5 4.5L13.5 13.5M9 16.5C13.1421 16.5 16.5 13.1421 16.5 9C16.5 4.85786 13.1421 1.5 9 1.5C4.85786 1.5 1.5 4.85786 1.5 9C1.5 13.1421 4.85786 16.5 9 16.5Z"
+                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+            </svg>
+            Rejected Orders
+          </button>
+          <button class="profile-tab" [class.active]="profileActiveTab === 'assigned'"
+            (click)="setProfileTab('assigned')">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M12 9C12 10.6569 10.6569 12 9 12C7.34315 12 6 10.6569 6 9C6 7.34315 7.34315 6 9 6C10.6569 6 12 7.34315 12 9ZM9 1.5C4.85786 1.5 1.5 4.85786 1.5 9C1.5 13.1421 4.85786 16.5 9 16.5C13.1421 16.5 16.5 13.1421 16.5 9C16.5 4.85786 13.1421 1.5 9 1.5Z"
+                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+            </svg>
+            Assigned Details
+          </button>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="profile-tab-content">
+          <!-- Loading Overlay -->
+          <div *ngIf="loadingProfileData" class="profile-loading-overlay">
+            <div class="loader"></div>
+            <p>Fetching data...</p>
+          </div>
+
+          <!-- Order List Tab -->
+          <div *ngIf="profileActiveTab === 'orders' && !loadingProfileData" class="tab-pane">
+            <app-home [showOnlyTable]="true" [externalOrders]="agentOrders">
+            </app-home>
+          </div>
+
+          <!-- Rejected Orders Tab -->
+          <div *ngIf="profileActiveTab === 'rejected' && !loadingProfileData" class="tab-pane">
+            <div class="rejected-orders-container">
+              <div class="section-header">
+                <h3>Rejected Orders</h3>
+                <p>History of orders declined by the agent for collection.</p>
+              </div>
+              <div class="custom-table-wrapper">
+                <table class="custom-table">
+                  <thead>
+                    <tr>
+                      <th>Order ID</th>
+                      <th>Oil Type</th>
+                      <th>Quantity</th>
+                      <th>Estimated Amount</th>
+                      <th>Rejected Date</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let order of rejectedOrders">
+                      <td><span class="order-id-badge">#{{ order.id }}</span></td>
+                      <td class="font-medium">{{ order.type }}</td>
+                      <td>{{ order.quantity }} KG</td>
+                      <td>₹{{ order.amount || '0' }}</td>
+                      <td>{{ order.createdAt | date:'MMM dd, yyyy' }}</td>
+                      <td>
+                        <span class="status-badge status-rejected">Rejected</span>
+                      </td>
+                    </tr>
+                    <tr *ngIf="rejectedOrders.length === 0">
+                      <td colspan="6" class="empty-msg">
+                        <span class="empty-icon">📂</span>
+                        No rejected orders found.
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Assigned Details Tab -->
+          <div *ngIf="profileActiveTab === 'assigned' && !loadingProfileData" class="tab-pane">
+            <div class="assigned-details-container">
+              <div class="assigned-section">
+                <div class="section-header">
+                  <h3>Pending Assignments</h3>
+                  <p>Assignments waiting for agent acceptance.</p>
+                </div>
+                <div class="custom-table-wrapper">
+                  <table class="custom-table">
+                    <thead>
+                      <tr>
+                        <th>Order ID</th>
+                        <th>Restaurant</th>
+                        <th>Type</th>
+                        <th>Quantity</th>
+                        <th>Proposed Price</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of assignedDetails.pendingData">
+                        <td><span class="order-id-badge">#{{ item.order_id }}</span></td>
+                        <td>
+                          <div class="venue-info">
+                            <span class="venue-name">{{ item.restaurant_name }}</span>
+                            <span class="venue-contact">{{ item.user_contact }}</span>
+                          </div>
+                        </td>
+                        <td>{{ item.type }}</td>
+                        <td>{{ item.quantity }} KG</td>
+                        <td>₹{{ item.proposed_unit_price }}</td>
+                        <td>{{ item.date }}</td>
+                        <td>
+                          <span class="status-badge status-pending">Pending</span>
+                        </td>
+                      </tr>
+                      <tr *ngIf="assignedDetails.pendingData.length === 0">
+                        <td colspan="7" class="empty-msg">
+                          <span class="empty-icon">⏳</span>
+                          No pending assignments.
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="assigned-section">
+                <div class="section-header">
+                  <h3>Approved Assignments</h3>
+                  <p>Assignments currently active for collection.</p>
+                </div>
+                <div class="custom-table-wrapper">
+                  <table class="custom-table">
+                    <thead>
+                      <tr>
+                        <th>Order ID</th>
+                        <th>Restaurant</th>
+                        <th>Type</th>
+                        <th>Quantity</th>
+                        <th>Agreed Price</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of assignedDetails.approvedData">
+                        <td><span class="order-id-badge">#{{ item.order_id }}</span></td>
+                        <td>
+                          <div class="venue-info">
+                            <span class="venue-name">{{ item.restaurant_name }}</span>
+                            <span class="venue-contact">{{ item.user_contact }}</span>
+                          </div>
+                        </td>
+                        <td>{{ item.type }}</td>
+                        <td>{{ item.quantity }} KG</td>
+                        <td>₹{{ item.amount }}</td>
+                        <td>{{ item.date }}</td>
+                        <td>
+                          <span class="status-badge status-approved">Approved</span>
+                        </td>
+                      </tr>
+                      <tr *ngIf="assignedDetails.approvedData.length === 0">
+                        <td colspan="7" class="empty-msg">
+                          <span class="empty-icon">✅</span>
+                          No approved assignments.
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Agent Modal -->
+<div class="modal-overlay" *ngIf="showAddModal" (click)="closeAddModal()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Add New Agent</h2>
+      <button class="close-btn" (click)="closeAddModal()">&times;</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" [(ngModel)]="newAgent.fullName" placeholder="Enter full name">
+        </div>
+
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" [(ngModel)]="newAgent.email" placeholder="Enter email">
+        </div>
+
+        <div class="form-group">
+          <label>Contact Number</label>
+          <input type="text" [(ngModel)]="newAgent.contactNumber" placeholder="Enter contact number">
+        </div>
+
+        <div class="form-group">
+          <label>Date of Birth</label>
+          <input type="date" [(ngModel)]="newAgent.dob">
+        </div>
+
+        <div class="form-group">
+          <label>Age</label>
+          <input type="number" [(ngModel)]="newAgent.age" placeholder="Enter age">
+        </div>
+
+        <div class="form-group">
+          <label>Gender</label>
+          <select [(ngModel)]="newAgent.gender">
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>License Number</label>
+          <input type="text" [(ngModel)]="newAgent.licenseNumber" placeholder="Enter license number">
+        </div>
+
+        <div class="form-group">
+          <label>Pincode</label>
+          <input type="text" [(ngModel)]="newAgent.pincode" placeholder="Enter pincode">
+        </div>
+
+        <div class="form-group full-width">
+          <label>Address</label>
+          <textarea [(ngModel)]="newAgent.address" placeholder="Enter full address" rows="3"></textarea>
+        </div>
+      </div>
+
+      <div class="error-messages" *ngIf="validationErrors.length > 0">
+        <p *ngFor="let error of validationErrors" class="error-item">{{ error }}</p>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancel" (click)="closeAddModal()" [disabled]="submittingNewAgent">Cancel</button>
+      <button class="btn-submit" (click)="submitNewAgent()" [disabled]="submittingNewAgent">
+        {{ submittingNewAgent ? 'Creating...' : 'Create Agent' }}
+      </button>
     </div>
   </div>
 </div>

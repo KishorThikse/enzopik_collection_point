@@ -1,4 +1,17 @@
-<!-- Main App Layout - Simplified -->
-<app-sidenav>
+<!-- Render standalone pages (Login, AdminLogin) without any sidenav wrapper -->
+<ng-container *ngIf="!isLoggedIn() || isAdminLoginPage(); else navWrapper">
   <router-outlet></router-outlet>
-</app-sidenav>
+</ng-container>
+
+<!-- Render protected pages with their respective Sidenavs -->
+<ng-template #navWrapper>
+  <app-admin-sidenav *ngIf="isAdminPage(); else standardSidenav">
+    <router-outlet></router-outlet>
+  </app-admin-sidenav>
+
+  <ng-template #standardSidenav>
+    <app-sidenav>
+      <router-outlet></router-outlet>
+    </app-sidenav>
+  </ng-template>
+</ng-template>

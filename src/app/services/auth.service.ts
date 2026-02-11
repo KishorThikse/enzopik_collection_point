@@ -6,14 +6,15 @@ import { tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 
 export interface LoginRequest {
-  username: string;
+  email: string;
   password: string;
 }
 
 export interface LoginResponse {
   token: string;
-  refreshToken?: string;
-  user?: any;
+  role: string;
+  roleId: number;
+  message?: string;
 }
 
 @Injectable({
@@ -21,45 +22,83 @@ export interface LoginResponse {
 })
 export class AuthService {
   private readonly TOKEN_KEY = 'auth_token';
-  private readonly REFRESH_TOKEN_KEY = 'refresh_token';
+  private readonly USER_KEY = 'auth_user';
   private currentUserSubject = new BehaviorSubject<any>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
+
+  public get currentUserValue(): any {
+    return this.currentUserSubject.value;
+  }
 
   constructor(
     private http: HttpClient,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
-    // Load user from token if exists (only in browser)
     if (isPlatformBrowser(this.platformId)) {
-      const token = this.getToken();
-      if (token) {
-        // Decode and set user if needed
-        this.loadUserFromToken(token);
+      const userJson = localStorage.getItem(this.USER_KEY);
+      if (userJson) {
+        try {
+          this.currentUserSubject.next(JSON.parse(userJson));
+        } catch (e) {
+          localStorage.removeItem(this.USER_KEY);
+        }
       }
     }
   }
 
-  login(credentials: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${environment.apiUrl}/login`, credentials)
+  login(credentials: LoginRequest): Observable<any> {
+    // Calling the specific backend endpoint: api/Login/login
+    return this.http.post<any>(`${environment.apiUrl}/Login/login`, credentials)
       .pipe(
         tap(response => {
-          if (response.token) {
-            this.setToken(response.token);
-            if (response.refreshToken) {
-              this.setRefreshToken(response.refreshToken);
-            }
-            if (response.user) {
-              this.currentUserSubject.next(response.user);
-            }
+          // Backend returns: { message, role, roleId, token }
+          // Properties might be PascalCase or camelCase depending on JSON serializer settings
+          const token = response.token || response.Token;
+          const role = response.role || response.Role;
+          const roleId = response.roleId || response.RoleId;
+
+          if (token) {
+            this.setToken(token);
+            const user = {
+              id: roleId,
+              role: role,
+              email: credentials.email
+            };
+            this.setUser(user);
           }
         })
       );
   }
 
-  logout(): void {
+  setUser(user: any): void {
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem(this.USER_KEY, JSON.stringify(user));
+    }
+    this.currentUserSubject.next(user);
+  }
+
+  logout(skipApi: boolean = false): void {
+    const token = this.getToken(); // Capture token before clearing
+
+    if (!skipApi && token) {
+      // Attempt to notify backend about logout with the captured token
+      // We manually add the header to be 100% sure it's sent regardless of interceptor state
+      this.http.post(`${environment.apiUrl}/Logout/logout`, {}, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      }).subscribe({
+        next: () => console.log('Backend logout successful'),
+        error: (err) => console.error('Backend logout error', err)
+      });
+    }
+
+    // Proactively clear session
+    this.clearSession();
+  }
+
+  private clearSession(): void {
     if (isPlatformBrowser(this.platformId)) {
       localStorage.removeItem(this.TOKEN_KEY);
-      localStorage.removeItem(this.REFRESH_TOKEN_KEY);
+      localStorage.removeItem(this.USER_KEY);
     }
     this.currentUserSubject.next(null);
   }
@@ -77,49 +116,24 @@ export class AuthService {
     }
   }
 
-  getRefreshToken(): string | null {
-    if (isPlatformBrowser(this.platformId)) {
-      return localStorage.getItem(this.REFRESH_TOKEN_KEY);
-    }
-    return null;
-  }
-
-  setRefreshToken(token: string): void {
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem(this.REFRESH_TOKEN_KEY, token);
-    }
-  }
-
   isAuthenticated(): boolean {
-    const token = this.getToken();
-    if (!token) {
-      return false;
-    }
-    // Check if token is expired (you can add JWT decode logic here)
-    return true;
+    return !!this.getToken();
   }
 
-  private loadUserFromToken(token: string): void {
-    // You can decode JWT here to extract user information
-    // For now, just a placeholder
-    try {
-      const payload = this.decodeToken(token);
-      this.currentUserSubject.next(payload);
-    } catch (error) {
-      console.error('Error decoding token:', error);
-    }
+  getUserRole(): string {
+    return this.currentUserValue?.role?.toLowerCase() || '';
   }
 
-  private decodeToken(token: string): any {
-    try {
-      const base64Url = token.split('.')[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-      }).join(''));
-      return JSON.parse(jsonPayload);
-    } catch (error) {
-      return null;
-    }
+  requestOtp(email: string): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/newforgetpassword/requestotp`, { Username: email });
+  }
+
+  resetPassword(data: { email: string; otp: string; newPassword: string }): Observable<any> {
+    const payload = {
+      Username: data.email,
+      Otp: data.otp,
+      NewPassword: data.newPassword
+    };
+    return this.http.post(`${environment.apiUrl}/newforgetpassword/verifyotpandresetpassword`, payload);
   }
 }

@@ -1,0 +1,67 @@
+<div class="admin-login-layout">
+    <div class="login-card fade-in">
+        <div class="brand">
+            <div class="logo-box">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+            </div>
+            <h2>Enzo Admin Central</h2>
+            <p>Secure Enterprise Portal Access</p>
+        </div>
+
+        <form (ngSubmit)="onLogin()" #loginForm="ngForm">
+            <div class="form-group">
+                <label>Admin Email</label>
+                <div class="input-wrapper">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                    <input type="email" name="email" [(ngModel)]="loginData.email" placeholder="admin@enzopik.com"
+                        required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Master Password</label>
+                <div class="input-wrapper">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                    <input [type]="showPassword ? 'text' : 'password'" name="password" [(ngModel)]="loginData.password"
+                        placeholder="••••••••" required>
+                    <button type="button" class="toggle-btn" (click)="showPassword = !showPassword">
+                        <svg *ngIf="!showPassword" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                        <svg *ngIf="showPassword" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path
+                                d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24">
+                            </path>
+                            <line x1="1" y1="1" x2="23" y2="23"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="error-box" *ngIf="errorMessage">
+                {{ errorMessage }}
+            </div>
+
+            <button type="submit" class="login-btn" [disabled]="isLoading">
+                <span *ngIf="!isLoading">Authorize Access</span>
+                <div class="loader" *ngIf="isLoading"></div>
+            </button>
+        </form>
+
+        <div class="footer">
+            <p>&copy; 2026 Enzopik Advanced Agentic Coding. All rights reserved.</p>
+        </div>
+    </div>
+</div>

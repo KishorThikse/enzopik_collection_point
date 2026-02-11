@@ -1,33 +1,320 @@
+// Breakpoint variables
+$xs-max: 575px;
+$sm-min: 576px;
+
+$sm-max: 767px;
+$md-min: 768px;
+
+
+$md-max: 991px;
+$lg-min: 992px;
+
+$lg-max: 1199px;
+$xl-min: 1200px;
+$xl-max: 1399px;
+
+
+
 .oil-orders-container {
   padding: 24px;
-  background-color: #ffffff;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  // background-color: #F8F8F8;
+  font-family: 'Rajdhani', sans-serif;
   max-width: 100%;
   overflow-x: hidden;
+
+  // Extra Small (XS)
+  @media (max-width: $xs-max) {
+    padding: 12px;
+  }
+
+  // Small (SM)
+  @media (min-width: $sm-min) and (max-width: $sm-max) {
+    padding: 16px;
+  }
+
+  // Medium (MD)
+  @media (min-width: $md-min) and (max-width: $md-max) {
+    padding: 20px;
+  }
+
+  // Large (LG)
+  @media (min-width: $lg-min) and (max-width: $lg-max) {
+    padding: 22px;
+  }
+
+  // Extra Large (XL)
+  @media (min-width: $xl-min) and (max-width: $xl-max) {
+    padding: 24px;
+  }
+
 
   .header {
     margin-bottom: 20px;
 
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+
+      @media (max-width: $xs-max) {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+
     h2 {
       font-size: 20px;
-      font-weight: 600;
-      color: #1a1a1a;
+      font-weight: 500;
+      color: #020204;
       margin: 0 0 4px 0;
     }
 
     .subtitle {
-      font-size: 14px;
-      color: #666666;
+      font-size: 16px;
+      color: #625F6E;
+      font-weight: 400;
       margin: 0;
+    }
+
+    .request-btn {
+      background: #00a86b;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 12px rgba(0, 168, 107, 0.2);
+
+      &:hover {
+        background: darken(#00a86b, 5%);
+        transform: translateY(-1px);
+        box-shadow: 0 6px 16px rgba(0, 168, 107, 0.3);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+
+      svg {
+        stroke: white;
+      }
+    }
+  }
+}
+
+// Modal Styles
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: modalFadeIn 0.3s ease-out;
+}
+
+.modal-container {
+  background: white;
+  width: 90%;
+  max-width: 600px;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalSlideIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #0f172a;
+  }
+
+  .close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #64748b;
+    cursor: pointer;
+
+    &:hover {
+      color: #0f172a;
+    }
+  }
+}
+
+.modal-body {
+  padding: 24px;
+  max-height: 70vh;
+  overflow-y: auto;
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+
+    .full-width {
+      grid-column: span 2;
+
+      @media (max-width: 768px) {
+        grid-column: span 1;
+      }
     }
   }
 
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #475569;
+    }
+
+    input,
+    select,
+    textarea {
+      padding: 10px 12px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #1e293b;
+      background: #f8fafc;
+      transition: all 0.2s;
+
+      &:focus {
+        outline: none;
+        border-color: #00a86b;
+        background: white;
+        box-shadow: 0 0 0 3px rgba(0, 168, 107, 0.1);
+      }
+    }
+
+    textarea {
+      resize: vertical;
+    }
+  }
+
+  .message-area {
+    margin-top: 16px;
+
+    .error-msg {
+      background: #fef2f2;
+      color: #dc2626;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 14px;
+      border: 1px solid #fee2e2;
+    }
+
+    .success-msg {
+      background: #f0fdf4;
+      color: #16a34a;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 14px;
+      border: 1px solid #dcfce7;
+    }
+  }
+}
+
+.modal-footer {
+  padding: 16px 24px;
+  background: #f8fafc;
+  border-top: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+
+  button {
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-cancel {
+    background: white;
+    border: 1px solid #e2e8f0;
+    color: #64748b;
+
+    &:hover {
+      background: #f1f5f9;
+      color: #0f172a;
+    }
+  }
+
+  .btn-submit {
+    background: #00a86b;
+    border: 1px solid #00a86b;
+    color: white;
+
+    &:hover {
+      background: #008f5a;
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.oil-orders-container {
   .table-wrapper {
-    border: 1px solid #e0e0e0;
+    // border: 1px solid #e0e0e0;
     border-radius: 8px;
     background-color: #ffffff;
     overflow: hidden;
-   
 
     .table-controls {
       display: flex;
@@ -37,7 +324,19 @@
       // background-color: #fafafa;
       align-items: center;
       padding-right: 16px;
-      padding-left:16px;
+      padding-left: 16px;
+
+      // Extra Small (XS)
+      @media (max-width: $xs-max) {
+        padding: 12px;
+        flex-direction: column;
+      }
+
+      // Small (SM)
+      @media (min-width: $sm-min) and (max-width: $sm-max) {
+        padding: 14px;
+      }
+
 
       .search-box {
         width: 100%;
@@ -49,7 +348,22 @@
         border: 1px solid #e0e0e0;
         border-radius: 6px;
         padding: 8px 12px;
-        background-color:#0202040A;
+        background-color: #0202040A;
+
+        // Extra Small (XS)
+        @media (max-width: $xs-max) {
+          min-width: 100%;
+        }
+
+        // Small (SM)
+        @media (min-width: $sm-min) and (max-width: $sm-max) {
+          min-width: 250px;
+        }
+
+        // Medium (MD)
+        @media (min-width: $md-min) and (max-width: $md-max) {
+          min-width: 280px;
+        }
 
         .search-icon {
           margin-right: 8px;
@@ -64,7 +378,7 @@
           font-size: 14px;
           color: #333333;
           min-width: 0;
-         background-color: rgb(255 255 255 / 4%);
+          background-color: rgb(255 255 255 / 4%);
 
           &::placeholder {
             color: #999999;
@@ -80,7 +394,7 @@
         padding: 8px 16px;
         border: 1px solid #e0e0e0;
         border-radius: 6px;
-        background:#0202040A;
+        background: #0202040A;
         color: #333333;
         font-size: 14px;
         cursor: pointer;
@@ -93,6 +407,12 @@
           background-color: #f5f5f5;
         }
 
+        // Extra Small (XS)
+        @media (max-width: $xs-max) {
+          width: 100%;
+          justify-content: center;
+        }
+
         .filter-icon {
           font-size: 10px;
         }
@@ -102,7 +422,7 @@
     .table-container {
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
-      padding-left:16px;
+      padding-left: 16px;
       padding-right: 16px;
 
       &::-webkit-scrollbar {
@@ -129,17 +449,55 @@
       font-size: 14px;
       min-width: 1000px;
 
-      thead {
-        // background-color: #f8f9fa;
+      // Extra Small (XS)
+      @media (max-width: $xs-max) {
+        min-width: 800px;
+        font-size: 12px;
+      }
 
+      // Small (SM)
+      @media (min-width: $sm-min) and (max-width: $sm-max) {
+        min-width: 900px;
+        font-size: 13px;
+      }
+
+      // Medium (MD)
+      @media (min-width: $md-min) and (max-width: $md-max) {
+        min-width: 950px;
+      }
+
+      // Large (LG)
+      @media (min-width: $lg-min) and (max-width: $lg-max) {
+        min-width: 1000px;
+      }
+
+      // Extra Large (XL)
+      @media (min-width: $xl-min) and (max-width: $xl-max) {
+        min-width: 1000px;
+      }
+
+      thead {
+
+        // background-color: #f8f9fa;
         th {
           padding: 12px 16px;
           text-align: left;
-          font-weight: 600;
-          color: #666666;
-          font-size: 13px;
+          font-weight: 500;
+          color: #625F6E;
+          font-size: 16px;
           border-bottom: 1px solid #e0e0e0;
           white-space: nowrap;
+
+          // Extra Small (XS)
+          @media (max-width: $xs-max) {
+            padding: 10px 12px;
+            font-size: 15px;
+          }
+
+          // Small (SM)
+          @media (min-width: $sm-min) and (max-width: $sm-max) {
+            padding: 11px 14px;
+          }
         }
       }
 
@@ -153,8 +511,20 @@
 
           td {
             padding: 14px 16px;
-            color: #333333;
+            font-size: 15px;
+            font-weight: 500;
+            color: #625F6E;
             vertical-align: middle;
+
+            // Extra Small (XS)
+            @media (max-width: $xs-max) {
+              padding: 10px 12px;
+            }
+
+            // Small (SM)
+            @media (min-width: $sm-min) and (max-width: $sm-max) {
+              padding: 12px 14px;
+            }
 
             .expand-icon {
               margin-right: 8px;
@@ -173,6 +543,18 @@
                 border-radius: 50%;
                 object-fit: cover;
                 flex-shrink: 0;
+
+                // Extra Small (XS)
+                @media (max-width: $xs-max) {
+                  width: 24px;
+                  height: 24px;
+                }
+
+                // Small (SM)
+                @media (min-width: $sm-min) and (max-width: $sm-max) {
+                  width: 26px;
+                  height: 26px;
+                }
               }
 
               span {
@@ -188,51 +570,53 @@
               display: inline-block;
               white-space: nowrap;
 
-              &.status-assigned{
+              // Extra Small (XS)
+              @media (max-width: $xs-max) {
+                padding: 3px 10px;
+                font-size: 11px;
+              }
+
+              &.status-assigned {
                 background-color: #EFF8FF;
-                color:#175CD3;
+                color: #175CD3;
                 border: 1px solid #EFF8FF;
               }
 
-              &.status-pending{
+              &.status-pending {
                 background-color: #FFFAEB;
-                color:#B54708;
+                color: #B54708;
                 border: 1px solid #FFF6D3;
               }
 
               &.status-accepted {
                 background-color: #EFF8FF;
-                color:#175CD3;
+                color: #175CD3;
                 border: 1px solid #EFF8FF;
               }
 
-              &.status-collection{
-               background-color: #FDF2FA;
-                color:#C11574;
+              &.status-collection {
+                background-color: #FDF2FA;
+                color: #C11574;
                 border: 1px solid #FDF2FA;
               }
 
-              &.status-agent{
-                 background-color: #F2F4F7;
-                color:#344054;
+              &.status-agent {
+                background-color: #F2F4F7;
+                color: #344054;
                 border: 1px solid #F2F4F70A;
               }
 
-              &.status-fbo{
-                 background-color: #2265FC0A;
-                color:#593BF2;
+              &.status-fbo {
+                background-color: #2265FC0A;
+                color: #593BF2;
                 border: 1px solid #F2F4F70A;
               }
 
-              &.status-completed{
-                 background-color: #EBF9F5;
-                color:#027A48;
+              &.status-completed {
+                background-color: #EBF9F5;
+                color: #027A48;
                 border: 1px solid #ECFDF3;
               }
-
-
-
-
             }
 
             .view-btn {
@@ -263,26 +647,51 @@
       align-items: center;
       padding: 16px;
       border-top: 1px solid #e0e0e0;
-      background-color: #fafafa;
+      // background-color: #fafafa;
       flex-wrap: wrap;
       gap: 12px;
 
+      // Extra Small (XS)
+      @media (max-width: $xs-max) {
+        padding: 12px;
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      // Small (SM)
+      @media (min-width: $sm-min) and (max-width: $sm-max) {
+        padding: 14px;
+      }
+
+
       .page-info {
         font-size: 14px;
-        color: #666666;
+        color: black;
+
+        // Extra Small (XS)
+        @media (max-width: $xs-max) {
+          text-align: center;
+          margin-bottom: 8px;
+        }
       }
 
       .pagination-controls {
         display: flex;
         gap: 8px;
 
+        // Extra Small (XS)
+        @media (max-width: $xs-max) {
+          justify-content: center;
+        }
+
         .pagination-btn {
           padding: 6px 16px;
           border: 1px solid #e0e0e0;
           border-radius: 6px;
           background-color: #ffffff;
-          color: #333333;
-          font-size: 14px;
+          color: black;
+          font-weight: 500;
+          font-size: 12px;
           cursor: pointer;
           white-space: nowrap;
 
@@ -294,243 +703,17 @@
             opacity: 0.5;
             cursor: not-allowed;
           }
-        }
-      }
-    }
-  }
-}
 
-// ============================================
-// RESPONSIVE BREAKPOINTS
-// ============================================
-
-// Extra Small (XS) - < 576px (Small phones)
-@media (max-width: 575px) {
-  .oil-orders-container {
-    padding: 12px;
-
-    .header {
-      h2 {
-        font-size: 20px;
-      }
-
-      .subtitle {
-        font-size: 13px;
-      }
-    }
-
-    .table-wrapper {
-      .table-controls {
-        padding: 12px;
-        flex-direction: column;
-
-        .search-box {
-          min-width: 100%;
-        }
-
-        .filter-btn {
-          width: 100%;
-          justify-content: center;
-        }
-      }
-
-      .orders-table {
-        min-width: 800px;
-        font-size: 12px;
-
-        thead th {
-          padding: 10px 12px;
-          font-size: 12px;
-        }
-
-        tbody td {
-          padding: 10px 12px;
-
-          .user-info {
-            .avatar {
-              width: 24px;
-              height: 24px;
-            }
-          }
-
-          .status-badge {
-            padding: 3px 10px;
-            font-size: 11px;
-          }
-        }
-      }
-
-      .pagination {
-        padding: 12px;
-        flex-direction: column;
-        align-items: stretch;
-
-        .page-info {
-          text-align: center;
-          margin-bottom: 8px;
-        }
-
-        .pagination-controls {
-          justify-content: center;
-
-          .pagination-btn {
+          // Extra Small (XS)
+          @media (max-width: $xs-max) {
             flex: 1;
           }
-        }
-      }
-    }
-  }
-}
 
-// Small (SM) - 576px to 767px (Standard smartphones)
-@media (min-width: 576px) and (max-width: 767px) {
-  .oil-orders-container {
-    padding: 16px;
-
-    .header {
-      h2 {
-        font-size: 22px;
-      }
-    }
-
-    .table-wrapper {
-      .table-controls {
-        padding: 14px;
-
-        .search-box {
-          min-width: 250px;
-        }
-      }
-
-      .orders-table {
-        min-width: 900px;
-        font-size: 13px;
-
-        thead th {
-          padding: 11px 14px;
-        }
-
-        tbody td {
-          padding: 12px 14px;
-
-          .user-info {
-            .avatar {
-              width: 26px;
-              height: 26px;
-            }
-          }
-        }
-      }
-
-      .pagination {
-        padding: 14px;
-
-        .pagination-controls {
-          .pagination-btn {
+          // Small (SM)
+          @media (min-width: $sm-min) and (max-width: $sm-max) {
             padding: 6px 14px;
           }
         }
-      }
-    }
-  }
-}
-
-// Medium (MD) - 768px to 991px (Tablets)
-@media (min-width: 768px) and (max-width: 991px) {
-  .oil-orders-container {
-    padding: 20px;
-
-    .table-wrapper {
-      .table-controls {
-        .search-box {
-          min-width: 280px;
-        }
-      }
-
-      .orders-table {
-        min-width: 950px;
-      }
-    }
-  }
-}
-
-// Large (LG) - 992px to 1199px (Small laptops, iPad Pro landscape)
-@media (min-width: 992px) and (max-width: 1199px) {
-  .oil-orders-container {
-    padding: 22px;
-
-    .table-wrapper {
-      .orders-table {
-        min-width: 1000px;
-      }
-    }
-  }
-}
-
-// Extra Large (XL) - 1200px to 1399px (Desktops, large laptops)
-@media (min-width: 1200px) and (max-width: 1399px) {
-  .oil-orders-container {
-    padding: 24px;
-
-    .table-wrapper {
-      .orders-table {
-        min-width: 1000px;
-      }
-    }
-  }
-}
-
-// XXL - ≥ 1400px (Very large monitors, 4K screens)
-@media (min-width: 1400px) {
-  .oil-orders-container {
-    padding: 24px;
-    max-width: 1600px;
-    margin: 0 auto;
-
-    .table-wrapper {
-      .orders-table {
-        min-width: 1000px;
-
-        thead th {
-          padding: 14px 18px;
-          font-size: 14px;
-        }
-
-        tbody td {
-          padding: 16px 18px;
-          font-size: 15px;
-
-          .user-info {
-            .avatar {
-              width: 32px;
-              height: 32px;
-            }
-          }
-
-          .status-badge {
-            padding: 5px 14px;
-            font-size: 13px;
-          }
-        }
-      }
-    }
-  }
-}
-
-// Landscape orientation for mobile devices
-@media (max-height: 500px) and (orientation: landscape) {
-  .oil-orders-container {
-    .header {
-      margin-bottom: 12px;
-    }
-
-    .table-wrapper {
-      .table-controls {
-        padding: 10px;
-      }
-
-      .pagination {
-        padding: 10px;
       }
     }
   }

@@ -1,0 +1,66 @@
+ <div class="container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Owner</th>
+              <th>Status</th>
+              <th>DOB</th>
+              <th>Age</th>
+              <th>Gender</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>License No</th>
+              <th>View</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let restaurant of getCurrentPageItems()">
+              <td>
+                <div class="owner-cell">
+                  <div class="avatar">{{ getInitials(restaurant.owner) }}</div>
+                  <span>{{ restaurant.owner }}</span>
+                </div>
+              </td>
+              <td>
+                <span class="status-badge" [ngClass]="getStatusClass(restaurant.status)">
+                  <span class="status-dot"></span>
+                  {{ restaurant.status }}
+                </span>
+              </td>
+              <td>{{ restaurant.dob }}</td>
+              <td>{{ restaurant.age }}</td>
+              <td>{{ restaurant.gender }}</td>
+              <td>{{ restaurant.email }}</td>
+              <td>{{ restaurant.phone }}</td>
+              <td>{{ restaurant.licenseNo }}</td>
+              <td>
+                <button class="action-btn" (click)="viewAgentProfile(restaurant)">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="24" height="24" rx="5" fill="white"/>
+                    <rect x="0.5" y="0.5" width="23" height="23" rx="4.5" stroke="#020204" stroke-opacity="0.08"/>
+                    <path d="M10.3999 16L14.3999 12L10.3999 8" stroke="#625F6E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="filteredRestaurants.length === 0">
+              <td colspan="9" class="no-data">
+                No agents found. Please check your connection or contact support.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Always show pagination (even when showOnlyTable is true) -->
+        <div class="table-footer">
+          <span class="pagination-info">Page {{ currentPage }} of {{ totalPages }}</span>
+          <div class="pagination-controls">
+            <button class="pagination-btn" (click)="previousPage()">
+              Previous
+            </button>
+            <button class="pagination-btn" (click)="nextPage()">
+              Next
+            </button>
+          </div>
+        </div>
+      </div>

@@ -1,0 +1,82 @@
+<div class="modal-overlay" (click)="onClose()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <div class="header-title">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M17.5 19C15.0147 19 13 16.9853 13 14.5C13 12.0147 15.0147 10 17.5 10C19.9853 10 22 12.0147 22 14.5C22 16.9853 19.9853 19 17.5 19Z"
+                        stroke="#3B82F6" stroke-width="2" />
+                    <path d="M12 10C12 7.23858 9.76142 5 7 5C4.23858 5 2 7.23858 2 10C2 12.7614 4.23858 15 7 15H13"
+                        stroke="#3B82F6" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                <h2>User Feedback</h2>
+            </div>
+            <button class="close-btn" (click)="onClose()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="modal-tabs">
+            <button [class.active]="activeTab === 'create'" (click)="setTab('create')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+                    <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
+                </svg>
+                Create Feedback
+            </button>
+            <button [class.active]="activeTab === 'list'" (click)="setTab('list')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />
+                </svg>
+                All Feedbacks
+            </button>
+        </div>
+
+        <div class="modal-content">
+            <!-- Create Tab -->
+            <div *ngIf="activeTab === 'create'" class="tab-pane">
+                <div class="form-group">
+                    <label>Your Role</label>
+                    <input type="text" [(ngModel)]="feedback.role" placeholder="e.g. Administrator, Agent, Vendor">
+                </div>
+                <div class="form-group">
+                    <label>Feedback</label>
+                    <textarea [(ngModel)]="feedback.feedback" placeholder="Share your experience or suggestions..."
+                        rows="5"></textarea>
+                </div>
+
+                <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+                <div *ngIf="errorMessage" class="alert alert-error">{{ errorMessage }}</div>
+
+                <button class="submit-btn" [disabled]="isLoading" (click)="submitFeedback()">
+                    <span *ngIf="!isLoading">Submit Feedback</span>
+                    <span *ngIf="isLoading" class="loader"></span>
+                </button>
+            </div>
+
+            <!-- List Tab -->
+            <div *ngIf="activeTab === 'list'" class="tab-pane list-pane">
+                <div *ngIf="isLoading" class="loading-state">
+                    <span class="loader-large"></span>
+                    <p>Loading feedbacks...</p>
+                </div>
+
+                <div *ngIf="!isLoading && feedbacks.length === 0" class="empty-state">
+                    <p>No feedback found.</p>
+                </div>
+
+                <div *ngIf="!isLoading && feedbacks.length > 0" class="feedback-list">
+                    <div *ngFor="let item of feedbacks" class="feedback-item">
+                        <div class="item-header">
+                            <span class="item-role">{{ item.role }}</span>
+                            <span class="item-date">{{ item.date }}</span>
+                        </div>
+                        <p class="item-text">{{ item.feedback1 }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

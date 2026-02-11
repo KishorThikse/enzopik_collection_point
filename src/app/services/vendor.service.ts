@@ -1,14 +1,23 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 import { ApiService } from './api.service';
+import { DummyDataService } from './dummy-data.service';
 
 export interface Vendor {
   id?: number;
   fullName: string;
-  email: string;
-  password?: string;
+  dob: string;
+  age: string | number;
+  gender: string;
+  countryCode: string;
   contactNumber: string;
-  location: string;
+  email: string;
+  licenseNumber: string;
+  pincode: string;
+  address: string;
+  profile: string;
+  password?: string;
   status?: string;
 }
 
@@ -18,11 +27,21 @@ export interface Vendor {
 export class VendorService {
   private endpoint = 'Vendors';
 
-  constructor(private apiService: ApiService) { }
+  constructor(
+    private apiService: ApiService,
+    private dummyDataService: DummyDataService
+  ) { }
 
   // Get all vendors
-  getAll(): Observable<Vendor[]> {
-    return this.apiService.get<Vendor[]>(this.endpoint);
+  getAll(status?: string): Observable<Vendor[]> {
+    const params = status ? { status } : {};
+    return this.apiService.get<Vendor[]>(this.endpoint, params).pipe(
+      tap(() => console.log(`✅ Vendor API data loaded${status ? ` for status: ${status}` : ''}`)),
+      catchError(error => {
+        console.warn(`⚠️ Vendor API failed${status ? ` for status ${status}` : ''}, using dummy data:`, error);
+        return of(this.dummyDataService.getDummyVendors(status));
+      })
+    );
   }
 
   // Get vendor by ID
@@ -38,6 +57,21 @@ export class VendorService {
   // Update vendor
   update(id: number, vendor: Partial<Vendor>): Observable<any> {
     return this.apiService.put<any>(`${this.endpoint}/${id}`, vendor);
+  }
+
+  // Get oil orders by vendor ID
+  getOrdersByVendor(vendorId: number): Observable<any[]> {
+    return this.apiService.get<any[]>(`${this.endpoint}/oilOrders/${vendorId}`);
+  }
+
+  // Get rejected orders by vendor ID
+  getRejectedOrders(vendorId: number): Observable<any> {
+    return this.apiService.get<any>(`${this.endpoint}/${vendorId}/rejected-orders`);
+  }
+
+  // Get vendor assigned details by vendor ID
+  getAssignedDetails(vendorId: number): Observable<any> {
+    return this.apiService.get<any>(`${this.endpoint}/vendorAssignedDetails/${vendorId}`);
   }
 
   // Delete vendor

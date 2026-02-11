@@ -1,0 +1,400 @@
+<div class="admin-dashboard-container">
+    <div class="admin-header">
+        <div class="header-left">
+            <h1>Admin Command Center</h1>
+            <p>System Monitoring & Resource Management</p>
+        </div>
+        <div class="tab-nav">
+            <button [class.active]="activeTab === 'dashboard'" (click)="changeTab('dashboard')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="14" width="7" height="7"></rect>
+                    <rect x="3" y="14" width="7" height="7"></rect>
+                </svg>
+                Overview
+            </button>
+            <button [class.active]="activeTab === 'admins'" (click)="changeTab('admins')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="8.5" cy="7" r="4"></circle>
+                    <polyline points="17 11 19 13 23 9"></polyline>
+                </svg>
+                Administrators
+            </button>
+            <button [class.active]="activeTab === 'agents'" (click)="changeTab('agents')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+                Agents
+            </button>
+            <button [class.active]="activeTab === 'hubs'" (click)="changeTab('hubs')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                Operation Hubs
+            </button>
+            <button class="approval-tab-btn" [class.active]="activeTab === 'approvals'"
+                (click)="changeTab('approvals')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 11l3 3L22 4"></path>
+                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                </svg>
+                Resource Approvals
+            </button>
+            <button class="add-tab-btn" [class.active]="activeTab === 'add-admin'" (click)="changeTab('add-admin')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="8.5" cy="7" r="4"></circle>
+                    <line x1="20" y1="8" x2="20" y2="14"></line>
+                    <line x1="17" y1="11" x2="23" y2="11"></line>
+                </svg>
+                Add Admin
+            </button>
+        </div>
+    </div>
+
+    <div class="dashboard-content">
+        <!-- Dashboard Tab -->
+        <div class="tab-pane" *ngIf="activeTab === 'dashboard'">
+            <div class="stats-grid" *ngIf="dashboardData">
+                <div class="stat-card revenue">
+                    <div class="icon-box"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="1" x2="12" y2="23"></line>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg></div>
+                    <div class="stat-info">
+                        <label>Total Revenue</label>
+                        <h3>${{ dashboardData.revenue | number:'1.2-2' }}</h3>
+                    </div>
+                </div>
+                <div class="stat-card quantity">
+                    <div class="icon-box"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path
+                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                            </path>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                        </svg></div>
+                    <div class="stat-info">
+                        <label>Oil Collected</label>
+                        <h3>{{ dashboardData.quantity }} KG</h3>
+                    </div>
+                </div>
+                <div class="stat-card payment">
+                    <div class="icon-box"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="5" width="20" height="14" rx="2"></rect>
+                            <line x1="2" y1="10" x2="22" y2="10"></line>
+                        </svg></div>
+                    <div class="stat-info">
+                        <label>Online vs Cash</label>
+                        <h3>${{ dashboardData.online | number:'1.0' }} / ${{ dashboardData.cash | number:'1.0' }}</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="charts-box" *ngIf="dashboardData">
+                <div class="card shadow">
+                    <h4>Collection by Oil Type</h4>
+                    <div class="type-list">
+                        <div class="type-item" *ngFor="let t of dashboardData.oil_types">
+                            <span class="type-name">{{ t.type }}</span>
+                            <div class="progress-bar">
+                                <div class="fill" [style.width.%]="(t.quantity / dashboardData.quantity) * 100"></div>
+                            </div>
+                            <span class="type-val">{{ t.quantity }} KG</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Admin Form Tab -->
+        <div class="tab-pane" *ngIf="activeTab === 'add-admin'">
+            <div class="card shadow form-card">
+                <h3>Provision New Administrator</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" [(ngModel)]="adminForm.fullName" placeholder="e.g. John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" [(ngModel)]="adminForm.email" placeholder="e.g. admin@enzo.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Country Code</label>
+                        <input type="text" [(ngModel)]="adminForm.countryCode" placeholder="e.g. +1">
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Number</label>
+                        <input type="text" [(ngModel)]="adminForm.contactNumber" placeholder="e.g. 1234567890">
+                    </div>
+                    <div class="form-group">
+                        <label>Company Name</label>
+                        <input type="text" [(ngModel)]="adminForm.companyName" placeholder="e.g. Enzo Point">
+                    </div>
+                    <div class="form-group">
+                        <label>Company Address</label>
+                        <input type="text" [(ngModel)]="adminForm.companyAddress" placeholder="e.g. 123 Main St">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" [(ngModel)]="adminForm.password" placeholder="••••••••">
+                    </div>
+                    <div class="form-group">
+                        <label>Profile Status</label>
+                        <select [(ngModel)]="adminForm.profile">
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button class="save-btn" (click)="saveAdmin()">Create Administrator Account</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin List Tab -->
+        <div class="tab-pane" *ngIf="activeTab === 'admins'">
+
+            <div class="premium-table-wrapper card shadow">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Company</th>
+                            <th>Address</th>
+                            <th>Status/Profile</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let admin of adminList">
+                            <td><span class="id-tag">#{{ admin.id }}</span></td>
+                            <td class="bold">{{ admin.fullName }}</td>
+                            <td>{{ admin.email }}</td>
+                            <td><span class="muted">{{ admin.countryCode }}</span> {{ admin.contactNumber }}</td>
+                            <td>{{ admin.companyName }}</td>
+                            <td>{{ admin.companyAddress }}</td>
+                            <td><span class="status-badge" [class.active]="admin.profile === 'active'">{{ admin.profile
+                                    }}</span></td>
+                            <td>
+                                <div class="row-actions">
+                                    <button class="edit" (click)="openEditModal(admin)">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <path d="M12 20h9"></path>
+                                            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                                        </svg>
+                                    </button>
+                                    <button class="delete" (click)="deleteAdmin(admin.id)">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                            <path
+                                                d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                            </path>
+                                            <line x1="10" y1="11" x2="10" y2="17"></line>
+                                            <line x1="14" y1="11" x2="14" y2="17"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Agents Tab -->
+        <div class="tab-pane" *ngIf="activeTab === 'agents'">
+            <div class="premium-table-wrapper card shadow">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Full Name</th>
+                            <th>Address</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let agent of agentsList">
+                            <td><span class="id-tag">#{{ agent.id }}</span></td>
+                            <td class="bold">{{ agent.fullName }}</td>
+                            <td>{{ agent.address }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Hubs Tab -->
+        <div class="tab-pane" *ngIf="activeTab === 'hubs'">
+            <div class="premium-table-wrapper card shadow">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Hub Name</th>
+                            <th>Operating Address</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let hub of hubsList">
+                            <td><span class="id-tag">#{{ hub.id }}</span></td>
+                            <td class="bold">{{ hub.hubName }}</td>
+                            <td>{{ hub.address }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Approvals Tab -->
+        <div class="tab-pane" *ngIf="activeTab === 'approvals'">
+            <div class="approval-header">
+                <h3>Verification Queue</h3>
+                <p>Approve or Reject new partner registrations</p>
+            </div>
+
+            <!-- Pending Agents -->
+            <div class="card shadow section-card">
+                <div class="section-title">
+                    <h4><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                        </svg> Pending Agents/Vendors</h4>
+                </div>
+                <div class="premium-table-wrapper mini">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Contact</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let v of pendingVendors">
+                                <td class="bold">{{ v.fullName }}</td>
+                                <td>{{ v.email }} <br> <span class="muted">{{ v.contactNumber }}</span></td>
+                                <td>
+                                    <div class="row-actions">
+                                        <button class="approve-btn" (click)="onApproveVendor(v.id)">Approve</button>
+                                        <button class="reject-btn" (click)="onRejectVendor(v.id)">Reject</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr *ngIf="pendingVendors.length === 0">
+                                <td colspan="3" class="empty-msg">No pending agents</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Pending Restaurants -->
+            <div class="card shadow section-card" style="margin-top: 30px;">
+                <div class="section-title">
+                    <h4><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg> Pending Restaurants/FBOs</h4>
+                </div>
+                <div class="premium-table-wrapper mini">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Entity Name</th>
+                                <th>Contact</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let r of pendingRestaurants">
+                                <td class="bold">{{ r.restaurantName }}</td>
+                                <td>{{ r.email }} <br> <span class="muted">{{ r.contactNumber }}</span></td>
+                                <td>
+                                    <div class="row-actions">
+                                        <button class="approve-btn" (click)="onApproveRestaurant(r.id)">Approve</button>
+                                        <button class="reject-btn" (click)="onRejectRestaurant(r.id)">Reject</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr *ngIf="pendingRestaurants.length === 0">
+                                <td colspan="3" class="empty-msg">No pending restaurant users</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Modal -->
+    <div class="modal-overlay" *ngIf="showAdminModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>{{ isEditMode ? 'Modify Administrator' : 'Provision New Admin' }}</h3>
+                <button (click)="showAdminModal = false">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Legal Full Name</label>
+                        <input type="text" [(ngModel)]="adminForm.fullName">
+                    </div>
+                    <div class="form-group">
+                        <label>Corporate Email</label>
+                        <input type="email" [(ngModel)]="adminForm.email">
+                    </div>
+                    <div class="form-group">
+                        <label>Country Code</label>
+                        <input type="text" [(ngModel)]="adminForm.countryCode" placeholder="+1">
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Number</label>
+                        <input type="text" [(ngModel)]="adminForm.contactNumber">
+                    </div>
+                    <div class="form-group">
+                        <label>Company Name</label>
+                        <input type="text" [(ngModel)]="adminForm.companyName">
+                    </div>
+                    <div class="form-group">
+                        <label>Company Address</label>
+                        <input type="text" [(ngModel)]="adminForm.companyAddress">
+                    </div>
+                    <div class="form-group">
+                        <label>Profile Status</label>
+                        <select [(ngModel)]="adminForm.profile">
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+                    <div class="form-group" *ngIf="!isEditMode">
+                        <label>Initialize Password</label>
+                        <input type="password" [(ngModel)]="adminForm.password">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="cancel-btn" (click)="showAdminModal = false">Cancel</button>
+                <button class="save-btn" (click)="saveAdmin()">{{ isEditMode ? 'Update' : 'Confirm' }}</button>
+            </div>
+        </div>
+    </div>
+</div>

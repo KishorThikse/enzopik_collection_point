@@ -1,0 +1,226 @@
+<div class="login-container">
+    <div class="login-card">
+        <div class="login-header">
+            <div class="logo">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="20" cy="20" r="20" fill="#00A86B" />
+                    <path d="M20 10V30M10 20H30" stroke="white" stroke-width="4" stroke-linecap="round" />
+                </svg>
+            </div>
+            <h1>Enzopik</h1>
+            <p *ngIf="!isForgotPassword">Enter your credentials to access the platform</p>
+            <p *ngIf="isForgotPassword">Reset your password</p>
+        </div>
+
+        <!-- Login Form -->
+        <form *ngIf="!isForgotPassword" (submit)="onLogin(); $event.preventDefault()" class="login-form">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <div class="input-wrapper">
+                    <input type="email" id="email" name="email" [(ngModel)]="loginData.email"
+                        placeholder="admin@example.com" required [disabled]="isLoading">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-wrapper password-wrapper">
+                    <input [type]="showPassword ? 'text' : 'password'" id="password" name="password"
+                        [(ngModel)]="loginData.password" placeholder="••••••••" required [disabled]="isLoading">
+                    <button type="button" class="toggle-password" (click)="showPassword = !showPassword"
+                        [disabled]="isLoading">
+                        <!-- Eye Icon (Show) -->
+                        <svg *ngIf="!showPassword" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                        <!-- Eye-off Icon (Hide) -->
+                        <svg *ngIf="showPassword" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24">
+                            </path>
+                            <line x1="1" y1="1" x2="23" y2="23"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="forgot-password-link">
+                <a href="javascript:void(0)" (click)="toggleForgotPassword()">Forgot Password?</a>
+            </div>
+
+            <div *ngIf="errorMessage" class="error-message">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                {{ errorMessage }}
+            </div>
+
+            <button type="submit" class="submit-btn" [disabled]="isLoading">
+                <span *ngIf="!isLoading">Sign In</span>
+                <span *ngIf="isLoading" class="loader"></span>
+            </button>
+        </form>
+
+        <!-- Forgot Password Form -->
+        <div *ngIf="isForgotPassword" class="login-form">
+            <!-- Step 1: Request OTP -->
+            <div *ngIf="forgotPasswordStep === 1">
+                <form (submit)="onRequestOtp(); $event.preventDefault()">
+                    <div class="form-group">
+                        <label for="fp-email">Enter your registered email</label>
+                        <div class="input-wrapper">
+                            <input type="email" id="fp-email" name="email" [(ngModel)]="forgotPasswordData.email"
+                                placeholder="user@example.com" required [disabled]="isLoading">
+                        </div>
+                    </div>
+
+                    <div *ngIf="errorMessage" class="error-message">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                        {{ errorMessage }}
+                    </div>
+                    <div *ngIf="successMessage" class="success-message" style="color: green; margin-bottom: 1rem;">
+                        {{ successMessage }}
+                    </div>
+
+                    <button type="submit" class="submit-btn" [disabled]="isLoading">
+                        <span *ngIf="!isLoading">Send OTP</span>
+                        <span *ngIf="isLoading" class="loader"></span>
+                    </button>
+                </form>
+                <div class="back-to-login">
+                    <a href="javascript:void(0)" (click)="toggleForgotPassword()">Back to Login</a>
+                </div>
+            </div>
+
+            <!-- Step 2: Verify OTP -->
+            <div *ngIf="forgotPasswordStep === 2">
+                <form (submit)="onVerifyOtp(); $event.preventDefault()">
+                    <div class="form-group">
+                        <label for="fp-email-readonly">Email</label>
+                        <div class="input-wrapper">
+                            <input type="email" id="fp-email-readonly" [value]="forgotPasswordData.email" disabled
+                                style="background-color: #f0f0f0; cursor: not-allowed;">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="otp">OTP</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="otp" name="otp" [(ngModel)]="forgotPasswordData.otp"
+                                placeholder="Enter OTP" required [disabled]="isLoading">
+                        </div>
+                    </div>
+
+                    <div *ngIf="errorMessage" class="error-message">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                        {{ errorMessage }}
+                    </div>
+                    <div *ngIf="successMessage" class="success-message" style="color: green; margin-bottom: 1rem;">
+                        {{ successMessage }}
+                    </div>
+
+                    <button type="submit" class="submit-btn" [disabled]="isLoading">
+                        <span *ngIf="!isLoading">Verify OTP</span>
+                        <span *ngIf="isLoading" class="loader"></span>
+                    </button>
+                </form>
+                <div class="back-to-login">
+                    <a href="javascript:void(0)" (click)="forgotPasswordStep = 1">Back</a>
+                </div>
+            </div>
+
+            <!-- Step 3: Reset Password -->
+            <div *ngIf="forgotPasswordStep === 3">
+                <form (submit)="onResetPassword(); $event.preventDefault()">
+                    <div class="form-group">
+                        <label for="new-password">New Password</label>
+                        <div class="input-wrapper password-wrapper">
+                            <input [type]="showNewPassword ? 'text' : 'password'" id="new-password" name="newPassword"
+                                [(ngModel)]="forgotPasswordData.newPassword" placeholder="New Password" required
+                                [disabled]="isLoading">
+                            <button type="button" class="toggle-password" (click)="showNewPassword = !showNewPassword"
+                                [disabled]="isLoading">
+                                <svg *ngIf="!showNewPassword" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                                <svg *ngIf="showNewPassword" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path
+                                        d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24">
+                                    </path>
+                                    <line x1="1" y1="1" x2="23" y2="23"></line>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm Password</label>
+                        <div class="input-wrapper password-wrapper">
+                            <input [type]="showConfirmPassword ? 'text' : 'password'" id="confirm-password"
+                                name="confirmPassword" [(ngModel)]="forgotPasswordData.confirmPassword"
+                                placeholder="Confirm Password" required [disabled]="isLoading">
+                            <button type="button" class="toggle-password"
+                                (click)="showConfirmPassword = !showConfirmPassword" [disabled]="isLoading">
+                                <svg *ngIf="!showConfirmPassword" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                                <svg *ngIf="showConfirmPassword" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path
+                                        d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24">
+                                    </path>
+                                    <line x1="1" y1="1" x2="23" y2="23"></line>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div *ngIf="errorMessage" class="error-message">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                        {{ errorMessage }}
+                    </div>
+                    <div *ngIf="successMessage" class="success-message" style="color: green; margin-bottom: 1rem;">
+                        {{ successMessage }}
+                    </div>
+
+                    <button type="submit" class="submit-btn" [disabled]="isLoading">
+                        <span *ngIf="!isLoading">Reset Password</span>
+                        <span *ngIf="isLoading" class="loader"></span>
+                    </button>
+                </form>
+                <div class="back-to-login">
+                    <a href="javascript:void(0)" (click)="forgotPasswordStep = 2">Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

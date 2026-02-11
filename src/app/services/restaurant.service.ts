@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 import { ApiService } from './api.service';
+import { DummyDataService } from './dummy-data.service';
 
 export interface RestaurantUser {
   id: number;
@@ -19,6 +21,7 @@ export interface RestaurantUser {
   status: string;
   bankName: string;
   accountNo: string;
+  ifscCode?: string;
   expectedVolume: string;
   agreedPrice: string;
   assignedAgent: string;
@@ -44,7 +47,10 @@ export interface DashboardData {
 export class RestaurantService {
   private endpoint = 'RestaurantUsers';
 
-  constructor(private apiService: ApiService) { }
+  constructor(
+    private apiService: ApiService,
+    private dummyDataService: DummyDataService
+  ) { }
 
   // Get all restaurant users with optional status filter
   getAll(status?: string): Observable<RestaurantUser[]> {
@@ -53,7 +59,13 @@ export class RestaurantService {
     console.log(' Endpoint:', this.endpoint);
     const params = status ? { status } : undefined;
     console.log(' Params:', params);
-    return this.apiService.get<RestaurantUser[]>(this.endpoint, params);
+    return this.apiService.get<RestaurantUser[]>(this.endpoint, params).pipe(
+      tap(() => console.log(`✅ Restaurant API data loaded${status ? ` for status: ${status}` : ''}`)),
+      catchError(error => {
+        console.warn(`⚠️ Restaurant API failed${status ? ` for status ${status}` : ''}, using dummy data:`, error);
+        return of(this.dummyDataService.getDummyRestaurants(status));
+      })
+    );
   }
 
   // Get restaurant user by ID
@@ -79,5 +91,15 @@ export class RestaurantService {
   // Get restaurant dashboard data
   getDashboard(): Observable<DashboardData> {
     return this.apiService.get<DashboardData>(`${this.endpoint}/restaurantDashboard`);
+  }
+
+  // Update restaurant user
+  update(id: number, data: any): Observable<any> {
+    return this.apiService.put<any>(`${this.endpoint}/${id}`, data);
+  }
+
+  // Get orders by restaurant user ID
+  getOrders(restaurantUserId: number): Observable<any> {
+    return this.apiService.get<any>(`${this.endpoint}/oilOrders/${restaurantUserId}`);
   }
 }

@@ -1,16 +1,19 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, Inject, PLATFORM_ID } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
-import { Inject, PLATFORM_ID } from '@angular/core';
+import { AuthService } from '../services/auth.service';
+import { NotificationService, Notification as BackendNotification } from '../services/notification.service';
+import { OilService } from '../services/oil.service';
 
-interface Notification {
+interface AppNotification {
   id: number;
   title: string;
   message: string;
   time: string;
   type: 'success' | 'warning' | 'info';
   read: boolean;
+  orderId?: number;
 }
 
 interface UserProfile {
@@ -27,9 +30,9 @@ interface UserProfile {
   styleUrls: ['./sidenav.scss']
 })
 export class Sidenav implements OnInit {
-  
+
   isOpen: boolean = true;
-  isCollapsed: boolean = false; // New property for desktop collapse
+  isCollapsed: boolean = false;
   isMobile: boolean = false;
   activeRoute: string = 'home';
 
@@ -39,71 +42,36 @@ export class Sidenav implements OnInit {
   showProfile: boolean = false;
   unreadCount: number = 0;
 
-  // Static user profile (replace with actual data from service later)
   userProfile: UserProfile = {
     name: '',
     email: '',
     role: '',
-    avatar: 'https://ui-avatars.com/api/?name=John+Doe&background=4CAF50&color=fff&size=128'
+    avatar: 'https://ui-avatars.com/api/?name=User&background=4CAF50&color=fff&size=128'
   };
 
-  // Static notifications (replace with actual data from service later)
-  notifications: Notification[] = [
-    {
-      id: 1,
-      title: 'New Order Received',
-      message: 'You have received a new oil collection order from La Penel Park',
-      time: '5 minutes ago',
-      type: 'success',
-      read: false
-    },
-    {
-      id: 2,
-      title: 'Payment Pending',
-      message: 'Payment for order #12345 is still pending',
-      time: '1 hour ago',
-      type: 'warning',
-      read: false
-    },
-    {
-      id: 3,
-      title: 'System Update',
-      message: 'System maintenance scheduled for tonight at 11 PM',
-      time: '3 hours ago',
-      type: 'info',
-      read: true
-    },
-    {
-      id: 4,
-      title: 'New Candidate Applied',
-      message: 'John Smith has applied for the Agent position',
-      time: '5 hours ago',
-      type: 'success',
-      read: false
-    },
-    {
-      id: 5,
-      title: 'Low Stock Alert',
-      message: 'Oil collection containers running low in warehouse',
-      time: '1 day ago',
-      type: 'warning',
-      read: true
-    }
-  ];
+  notifications: AppNotification[] = [];
 
   constructor(
     private router: Router,
-  @Inject(PLATFORM_ID) private platformId: Object
-) {}
-
-
+    private authService: AuthService,
+    private notificationService: NotificationService,
+    private oilService: OilService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) { }
 
   ngOnInit(): void {
     this.checkScreenSize();
     this.setActiveRoute();
-    this.updateUnreadCount();
-    
-    // Listen to route changes to update active state and page title
+
+    this.authService.currentUser$.subscribe(user => {
+      if (user) {
+        this.userProfile.name = user.name || user.UserName || user.FullName || 'User';
+        this.userProfile.email = user.email || user.Email || '';
+        this.userProfile.role = user.role || user.Role || 'Customer';
+        this.loadNotifications();
+      }
+    });
+
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
@@ -112,10 +80,8 @@ export class Sidenav implements OnInit {
     });
   }
 
-
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
-
     const target = event.target as HTMLElement;
     if (!target.closest('.notification-wrapper') && !target.closest('.profile-wrapper')) {
       this.showNotifications = false;
@@ -128,9 +94,7 @@ export class Sidenav implements OnInit {
     this.checkScreenSize();
   }
 
-
- checkScreenSize(): void {
- 
+  checkScreenSize(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.isMobile = window.innerWidth < 768;
       if (this.isMobile) {
@@ -141,11 +105,11 @@ export class Sidenav implements OnInit {
       }
     }
   }
+
   toggleSidenav(): void {
     this.isOpen = !this.isOpen;
   }
 
-  
   toggleCollapse(): void {
     if (!this.isMobile) {
       this.isCollapsed = !this.isCollapsed;
@@ -155,71 +119,77 @@ export class Sidenav implements OnInit {
   navigateTo(route: string): void {
     this.activeRoute = route;
     this.router.navigate([`/${route}`]);
-    
-    // Close sidenav on mobile after navigation
     if (this.isMobile) {
       this.isOpen = false;
     }
-
-    // Close dropdowns
     this.showNotifications = false;
     this.showProfile = false;
   }
 
   setActiveRoute(): void {
-    const currentRoute = this.router.url.split('/')[1];
+    const currentRoute = this.router.url.split('/')[1]?.split('?')[0];
     this.activeRoute = currentRoute || 'home';
   }
 
   updatePageTitle(): void {
-    // Update page title based on current route
     const routeTitles: { [key: string]: string } = {
       'home': 'Dashboard',
-      'sub-agent': 'Sub Agents',
-      'restaurant': 'Restaurants & PBO',
-      'agent': 'Agents',
-      'orders': 'Oil Orders',
+      'hubs': 'Management Hubs',
+      'restaurant': 'Restaurants & FBO',
+      'agent': 'Registered Agents',
+      'oil': 'Oil Sale Orders',
+      'nearest-order': 'Nearby Collection Points',
       'account': 'Account Settings',
       'profile': 'My Profile',
-      'settings': 'Settings',
-      'help': 'Help & Support',
-      'notifications': 'All Notifications'
+      'settings': 'System Settings'
     };
 
-    this.pageTitle = routeTitles[this.activeRoute] || 'Dashboard';
+    this.pageTitle = routeTitles[this.activeRoute] || 'Enzopik';
   }
-
 
   toggleNotifications(event: Event): void {
     event.stopPropagation();
     this.showNotifications = !this.showNotifications;
     this.showProfile = false;
+    if (this.showNotifications) {
+      this.loadNotifications();
+    }
   }
 
   updateUnreadCount(): void {
-    this.unreadCount = this.notifications.filter(n => !n.read).length;
+    const user = this.authService.currentUserValue;
+    if (!user) return;
+    const ownerId = user.id || user.Id || user.userId;
+    const roleName = user.role || user.Role || '';
+
+    this.notificationService.getUnreadCount(ownerId, roleName).subscribe(res => {
+      this.unreadCount = res.unreadCount;
+    });
   }
 
-  markAsRead(notification: Notification): void {
-    notification.read = true;
-    this.updateUnreadCount();
-    console.log('Marked notification as read:', notification.id);
+  markAsRead(notification: AppNotification): void {
+    if (!notification.read) {
+      this.notificationService.markAsRead(notification.id).subscribe(() => {
+        notification.read = true;
+        this.updateUnreadCount();
+      });
+    }
+
+    if (notification.orderId) {
+      this.router.navigate(['/oil'], { queryParams: { orderId: notification.orderId } });
+      this.showNotifications = false;
+    }
   }
 
   markAllAsRead(): void {
-    this.notifications.forEach(notification => {
-      notification.read = true;
-    });
-    this.updateUnreadCount();
-    console.log('Marked all notifications as read');
+    const unread = this.notifications.filter(n => !n.read);
+    unread.forEach(n => this.markAsRead(n));
   }
 
   viewAllNotifications(): void {
     this.showNotifications = false;
     this.router.navigate(['/notifications']);
-    console.log('Navigating to notifications page');
   }
-
 
   toggleProfile(event: Event): void {
     event.stopPropagation();
@@ -230,27 +200,24 @@ export class Sidenav implements OnInit {
   logout(): void {
     this.showProfile = false;
     this.showNotifications = false;
-    console.log('Logging out...');
-    
+    this.authService.logout();
     this.router.navigate(['/login']);
   }
 
- 
-  
-  updateUserProfile(profile: UserProfile): void {
-    this.userProfile = profile;
-  }
-
-  addNotification(notification: Notification): void {
-    this.notifications.unshift(notification);
-    this.updateUnreadCount();
-  }
-
   loadNotifications(): void {
-    // TODO: Replace with actual API call
-  }
-
-  loadUserProfile(): void {
-    // TODO: Replace with actual API call
+    const user = this.authService.currentUserValue;
+    if (!user) return;
+    this.updateUnreadCount();
+    this.oilService.getAllDashboardData().subscribe(orders => {
+      this.notifications = orders.slice(0, 5).map(order => ({
+        id: order.order_id,
+        title: `Entry Update`,
+        message: `${order.restaurant_name} order update.`,
+        time: order.date,
+        type: 'info' as const,
+        read: order.status !== 'pending',
+        orderId: order.order_id
+      }));
+    });
   }
 }

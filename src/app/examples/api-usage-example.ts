@@ -25,7 +25,7 @@ import { RevenueService } from '../services/revenue.service';
   `
 })
 export class ApiUsageExampleComponent implements OnInit {
-  
+
   // Data properties
   restaurants: RestaurantUser[] = [];
   agents: Agent[] = [];
@@ -39,12 +39,12 @@ export class ApiUsageExampleComponent implements OnInit {
     private agentService: AgentService,
     private vendorService: VendorService,
     private revenueService: RevenueService
-  ) {}
+  ) { }
 
   ngOnInit() {
     // Check if user is authenticated
     this.isLoggedIn = this.authService.isAuthenticated();
-    
+
     if (this.isLoggedIn) {
       // Load data if authenticated
       this.loadAllData();
@@ -58,7 +58,7 @@ export class ApiUsageExampleComponent implements OnInit {
    */
   exampleLogin() {
     const credentials = {
-      username: 'user@example.com',  // Use 'email' based on backend
+      email: 'user@example.com',  // Use 'email' based on backend
       password: 'password123'
     };
 
@@ -92,7 +92,7 @@ export class ApiUsageExampleComponent implements OnInit {
   exampleCheckAuth() {
     const token = this.authService.getToken();
     const isAuthenticated = this.authService.isAuthenticated();
-    
+
     console.log('Token:', token);
     console.log('Is Authenticated:', isAuthenticated);
   }
@@ -196,7 +196,7 @@ export class ApiUsageExampleComponent implements OnInit {
       next: (data) => {
         this.dashboardData = data;
         console.log('Dashboard data:', data);
-        
+
         // Access specific properties
         console.log('Revenue:', data.collectionData.revenue);
         console.log('Quantity:', data.collectionData.quantity);

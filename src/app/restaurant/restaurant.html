@@ -1,12 +1,12 @@
 <div class="restaurant-container" *ngIf="!showDetailView">
-  <!-- Header -->
+
   <div class="header">
     <div class="header-left">
       <h1 class="title">Restaurant(FBO)</h1>
       <p class="subtitle">Track project health and progress across teams.</p>
     </div>
     <div class="header-right">
-      <button class="btn-secondary">
+      <!-- <button class="btn-secondary">
         <svg class="icon-share" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path fill-rule="evenodd" clip-rule="evenodd" d="M13.234 2.52002C14.3079 2.52002 15.178 3.39008 15.178 4.464C15.178 5.53791 14.3079 6.40798 13.234 6.40798C12.1601 6.40798 11.29 5.53791 11.29 4.464C11.29 3.39008 12.1601 2.52002 13.234 2.52002Z" stroke="#625F6E" stroke-width="1.44" stroke-linecap="round" stroke-linejoin="round"/>
           <path fill-rule="evenodd" clip-rule="evenodd" d="M5.45814 7.05566C6.53205 7.05566 7.40212 7.92575 7.40212 8.99963C7.40212 10.0736 6.53205 10.9436 5.45814 10.9436C4.38422 10.9436 3.51416 10.0736 3.51416 8.99963C3.51416 7.92575 4.38422 7.05566 5.45814 7.05566Z" stroke="#625F6E" stroke-width="1.44" stroke-linecap="round" stroke-linejoin="round"/>
@@ -14,33 +14,51 @@
           <path d="M7.13594 9.97803L11.5619 12.5574M11.5549 5.44238L7.13525 8.02107" stroke="#625F6E" stroke-width="1.44" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
         Share Portfolio
-      </button>
-      <button class="btn-primary">
+      </button> -->
+      <button class="btn-primary" (click)="openAddModal()">
         <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M9 3.75V14.25M3.75 9H14.25" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M9 3.75V14.25M3.75 9H14.25" stroke="white" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" />
         </svg>
         Add Restaurant
       </button>
     </div>
   </div>
 
+  <input type="file" #fileInput style="display: none" (change)="onFileSelected($event)">
+
   <!-- Tabs -->
   <div class="tabs">
     <button class="tab active">
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M6.48513 2.5H13.5141C15.9708 2.5 17.5 4.23432 17.5 6.68865V13.3113C17.5 15.7657 15.9708 17.5 13.5133 17.5H6.48513C4.02837 17.5 2.5 15.7657 2.5 13.3113V6.68865C2.5 4.23432 4.03567 2.5 6.48513 2.5Z" stroke="#020204" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M7.11255 10.0002L9.03742 11.9242L12.8855 8.07617" stroke="#020204" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path
+          d="M6.48513 2.5H13.5141C15.9708 2.5 17.5 4.23432 17.5 6.68865V13.3113C17.5 15.7657 15.9708 17.5 13.5133 17.5H6.48513C4.02837 17.5 2.5 15.7657 2.5 13.3113V6.68865C2.5 4.23432 4.03567 2.5 6.48513 2.5Z"
+          stroke="#020204" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M7.11255 10.0002L9.03742 11.9242L12.8855 8.07617" stroke="#020204" stroke-width="1.5"
+          stroke-linecap="round" stroke-linejoin="round" />
       </svg>
       Over All Restaurant
     </button>
     <button class="tab">
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M16.7713 14.1616H6.77132C6.31049 14.1616 5.93799 14.5341 5.93799 14.995C5.93799 15.4558 6.31049 15.8283 6.77132 15.8283H16.7713C17.2322 15.8283 17.6047 15.4558 17.6047 14.995C17.6047 14.5341 17.2322 14.1616 16.7713 14.1616Z" fill="#625F6E"/>
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M16.7713 9.16162H6.77132C6.31049 9.16162 5.93799 9.53412 5.93799 9.99495C5.93799 10.4558 6.31049 10.8283 6.77132 10.8283H16.7713C17.2322 10.8283 17.6047 10.4558 17.6047 9.99495C17.6047 9.53412 17.2322 9.16162 16.7713 9.16162Z" fill="#625F6E"/>
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M6.77132 5.82829H16.7713C17.2322 5.82829 17.6047 5.45579 17.6047 4.99495C17.6047 4.53412 17.2322 4.16162 16.7713 4.16162H6.77132C6.31049 4.16162 5.93799 4.53412 5.93799 4.99495C5.93799 5.45579 6.31049 5.82829 6.77132 5.82829Z" fill="#625F6E"/>
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M3.4461 3.94531C2.86693 3.94531 2.39526 4.41948 2.39526 5.00364C2.39526 5.58197 2.86693 6.05281 3.4461 6.05281C4.02526 6.05281 4.49776 5.58197 4.49776 5.00364C4.49776 4.41948 4.02526 3.94531 3.4461 3.94531Z" fill="#625F6E"/>
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M3.4461 9.0625C2.86693 9.0625 2.39526 9.53333 2.39526 10.1125C2.39526 10.6908 2.86693 11.1625 3.4461 11.1625C4.02526 11.1625 4.49776 10.6908 4.49776 10.1125C4.49776 9.53333 4.02526 9.0625 3.4461 9.0625Z" fill="#625F6E"/>
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M3.4461 13.9453C2.86693 13.9453 2.39526 14.4195 2.39526 15.0036C2.39526 15.582 2.86693 16.0528 3.4461 16.0528C4.02526 16.0528 4.49776 15.582 4.49776 15.0036C4.49776 14.4195 4.02526 13.9453 3.4461 13.9453Z" fill="#625F6E"/>
+        <path fill-rule="evenodd" clip-rule="evenodd"
+          d="M16.7713 14.1616H6.77132C6.31049 14.1616 5.93799 14.5341 5.93799 14.995C5.93799 15.4558 6.31049 15.8283 6.77132 15.8283H16.7713C17.2322 15.8283 17.6047 15.4558 17.6047 14.995C17.6047 14.5341 17.2322 14.1616 16.7713 14.1616Z"
+          fill="#625F6E" />
+        <path fill-rule="evenodd" clip-rule="evenodd"
+          d="M16.7713 9.16162H6.77132C6.31049 9.16162 5.93799 9.53412 5.93799 9.99495C5.93799 10.4558 6.31049 10.8283 6.77132 10.8283H16.7713C17.2322 10.8283 17.6047 10.4558 17.6047 9.99495C17.6047 9.53412 17.2322 9.16162 16.7713 9.16162Z"
+          fill="#625F6E" />
+        <path fill-rule="evenodd" clip-rule="evenodd"
+          d="M6.77132 5.82829H16.7713C17.2322 5.82829 17.6047 5.45579 17.6047 4.99495C17.6047 4.53412 17.2322 4.16162 16.7713 4.16162H6.77132C6.31049 4.16162 5.93799 4.53412 5.93799 4.99495C5.93799 5.45579 6.31049 5.82829 6.77132 5.82829Z"
+          fill="#625F6E" />
+        <path fill-rule="evenodd" clip-rule="evenodd"
+          d="M3.4461 3.94531C2.86693 3.94531 2.39526 4.41948 2.39526 5.00364C2.39526 5.58197 2.86693 6.05281 3.4461 6.05281C4.02526 6.05281 4.49776 5.58197 4.49776 5.00364C4.49776 4.41948 4.02526 3.94531 3.4461 3.94531Z"
+          fill="#625F6E" />
+        <path fill-rule="evenodd" clip-rule="evenodd"
+          d="M3.4461 9.0625C2.86693 9.0625 2.39526 9.53333 2.39526 10.1125C2.39526 10.6908 2.86693 11.1625 3.4461 11.1625C4.02526 11.1625 4.49776 10.6908 4.49776 10.1125C4.49776 9.53333 4.02526 9.0625 3.4461 9.0625Z"
+          fill="#625F6E" />
+        <path fill-rule="evenodd" clip-rule="evenodd"
+          d="M3.4461 13.9453C2.86693 13.9453 2.39526 14.4195 2.39526 15.0036C2.39526 15.582 2.86693 16.0528 3.4461 16.0528C4.02526 16.0528 4.49776 15.582 4.49776 15.0036C4.49776 14.4195 4.02526 13.9453 3.4461 13.9453Z"
+          fill="#625F6E" />
       </svg>
       Login Request
     </button>
@@ -52,20 +70,31 @@
     <div class="table-header">
       <div class="search-box">
         <svg width="15" height="16" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M7.10756 13.4651C10.4807 13.4651 13.2151 10.7307 13.2151 7.35756C13.2151 3.98445 10.4807 1.25 7.10756 1.25C3.73445 1.25 1 3.98445 1 7.35756C1 10.7307 3.73445 13.4651 7.10756 13.4651Z" stroke="#625F6E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M11.355 11.9229L13.7495 14.3111" stroke="#625F6E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path
+            d="M7.10756 13.4651C10.4807 13.4651 13.2151 10.7307 13.2151 7.35756C13.2151 3.98445 10.4807 1.25 7.10756 1.25C3.73445 1.25 1 3.98445 1 7.35756C1 10.7307 3.73445 13.4651 7.10756 13.4651Z"
+            stroke="#625F6E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M11.355 11.9229L13.7495 14.3111" stroke="#625F6E" stroke-width="1.5" stroke-linecap="round"
+            stroke-linejoin="round" />
         </svg>
         <input type="text" placeholder="Restaurant(FBO) Name..." [(ngModel)]="searchText" (input)="onSearch()">
       </div>
       <button class="filter-btn">
         Filter
         <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M2.25 5.25L4.5 5.25" stroke="#625F6E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M2.25 12.75L6.75 12.75" stroke="#625F6E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M13.5 12.75L15.75 12.75" stroke="#625F6E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M11.25 5.25L15.75 5.25" stroke="#625F6E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M4.5 5.25C4.5 4.55109 4.5 4.20163 4.61418 3.92597C4.76642 3.55843 5.05843 3.26642 5.42597 3.11418C5.70163 3 6.05109 3 6.75 3C7.44891 3 7.79837 3 8.07403 3.11418C8.44157 3.26642 8.73358 3.55843 8.88582 3.92597C9 4.20163 9 4.55109 9 5.25C9 5.94891 9 6.29837 8.88582 6.57403C8.73358 6.94157 8.44157 7.23358 8.07403 7.38582C7.79837 7.5 7.44891 7.5 6.75 7.5C6.05109 7.5 5.70163 7.5 5.42597 7.38582C5.05843 7.23358 4.76642 6.94157 4.61418 6.57403C4.5 6.29837 4.5 5.94891 4.5 5.25Z" stroke="#625F6E" stroke-width="1.5"/>
-          <path d="M9 12.75C9 12.0511 9 11.7016 9.11418 11.426C9.26642 11.0584 9.55843 10.7664 9.92597 10.6142C10.2016 10.5 10.5511 10.5 11.25 10.5C11.9489 10.5 12.2984 10.5 12.574 10.6142C12.9416 10.7664 13.2336 11.0584 13.3858 11.426C13.5 11.7016 13.5 12.0511 13.5 12.75C13.5 13.4489 13.5 13.7984 13.3858 14.074C13.2336 14.4416 12.9416 14.7336 12.574 14.8858C12.2984 15 11.9489 15 11.25 15C10.5511 15 10.2016 15 9.92597 14.8858C9.55843 14.7336 9.26642 14.4416 9.11418 14.074C9 13.7984 9 13.4489 9 12.75Z" stroke="#625F6E" stroke-width="1.5"/>
+          <path d="M2.25 5.25L4.5 5.25" stroke="#625F6E" stroke-width="1.5" stroke-linecap="round"
+            stroke-linejoin="round" />
+          <path d="M2.25 12.75L6.75 12.75" stroke="#625F6E" stroke-width="1.5" stroke-linecap="round"
+            stroke-linejoin="round" />
+          <path d="M13.5 12.75L15.75 12.75" stroke="#625F6E" stroke-width="1.5" stroke-linecap="round"
+            stroke-linejoin="round" />
+          <path d="M11.25 5.25L15.75 5.25" stroke="#625F6E" stroke-width="1.5" stroke-linecap="round"
+            stroke-linejoin="round" />
+          <path
+            d="M4.5 5.25C4.5 4.55109 4.5 4.20163 4.61418 3.92597C4.76642 3.55843 5.05843 3.26642 5.42597 3.11418C5.70163 3 6.05109 3 6.75 3C7.44891 3 7.79837 3 8.07403 3.11418C8.44157 3.26642 8.73358 3.55843 8.88582 3.92597C9 4.20163 9 4.55109 9 5.25C9 5.94891 9 6.29837 8.88582 6.57403C8.73358 6.94157 8.44157 7.23358 8.07403 7.38582C7.79837 7.5 7.44891 7.5 6.75 7.5C6.05109 7.5 5.70163 7.5 5.42597 7.38582C5.05843 7.23358 4.76642 6.94157 4.61418 6.57403C4.5 6.29837 4.5 5.94891 4.5 5.25Z"
+            stroke="#625F6E" stroke-width="1.5" />
+          <path
+            d="M9 12.75C9 12.0511 9 11.7016 9.11418 11.426C9.26642 11.0584 9.55843 10.7664 9.92597 10.6142C10.2016 10.5 10.5511 10.5 11.25 10.5C11.9489 10.5 12.2984 10.5 12.574 10.6142C12.9416 10.7664 13.2336 11.0584 13.3858 11.426C13.5 11.7016 13.5 12.0511 13.5 12.75C13.5 13.4489 13.5 13.7984 13.3858 14.074C13.2336 14.4416 12.9416 14.7336 12.574 14.8858C12.2984 15 11.9489 15 11.25 15C10.5511 15 10.2016 15 9.92597 14.8858C9.55843 14.7336 9.26642 14.4416 9.11418 14.074C9 13.7984 9 13.4489 9 12.75Z"
+            stroke="#625F6E" stroke-width="1.5" />
         </svg>
       </button>
     </div>
@@ -109,9 +138,10 @@
             <td>
               <button class="action-btn" (click)="viewRestaurant(restaurant)">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect width="24" height="24" rx="5" fill="white"/>
-                  <rect x="0.5" y="0.5" width="23" height="23" rx="4.5" stroke="#020204" stroke-opacity="0.08"/>
-                  <path d="M10.3999 16L14.3999 12L10.3999 8" stroke="#625F6E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <rect width="24" height="24" rx="5" fill="white" />
+                  <rect x="0.5" y="0.5" width="23" height="23" rx="4.5" stroke="#020204" stroke-opacity="0.08" />
+                  <path d="M10.3999 16L14.3999 12L10.3999 8" stroke="#625F6E" stroke-width="1.5" stroke-linecap="round"
+                    stroke-linejoin="round" />
                 </svg>
               </button>
             </td>
@@ -123,10 +153,10 @@
       <div class="table-footer">
         <span class="pagination-info">Page {{ currentPage }} of {{ totalPages }}</span>
         <div class="pagination-controls">
-          <button class="pagination-btn" [disabled]="currentPage === 1">
+          <button class="pagination-btn" (click)="previousPage()">
             Previous
           </button>
-          <button class="pagination-btn" [disabled]="currentPage === totalPages">
+          <button class="pagination-btn" (click)="nextPage()">
             Next
           </button>
         </div>
@@ -150,56 +180,58 @@
       <div class="restaurant-card">
         <!-- Restaurant Image -->
         <div class="restaurant-image">
-          <img src="assets/svg/restaurant.svg" alt="Hotel Anbu" />
+          <img src="assets/svg/restaurant.svg" [alt]="selectedRestaurant?.restaurantName" />
         </div>
 
         <!-- Restaurant Basic Info -->
         <div class="restaurant-basic-info">
-          <h2 class="restaurant-name">Hotel Anbu</h2>
-          <p class="restaurant-hub-name">Nagar Hub</p>
-          <p class="restaurant-email">anbu@gmail.com</p>
+          <h2 class="restaurant-name">{{ selectedRestaurant?.restaurantName }}</h2>
+          <p class="restaurant-hub-name">{{ selectedRestaurant?.address }}</p>
+          <p class="restaurant-email">{{ selectedRestaurant?.email }}</p>
 
           <!-- Status Badge -->
-          <span class="status-badge status-approved">
+          <span class="status-badge" [ngClass]="getStatusClass(selectedRestaurant?.status || '')">
             <span class="status-dot"></span>
-            Active
+            {{ capitalizeStatus(selectedRestaurant?.status || '') }}
           </span>
         </div>
 
         <!-- Info Grid - Left Section -->
         <div class="info-grid">
           <div class="info-item">
-            <span class="info-label">Total GF Sq.</span>
-            <span class="info-value">250kg</span>
-          </div>
-          <div class="info-item">
-            <span class="info-label">Number of Orders</span>
-            <span class="info-value">22</span>
-          </div>
-          <div class="info-item">
-            <span class="info-label">Status</span>
-            <span class="info-value">Approved</span>
+            <span class="info-label">Restaurant ID</span>
+            <span class="info-value">{{ selectedRestaurant?.id }}</span>
           </div>
           <div class="info-item">
             <span class="info-label">Category</span>
-            <span class="info-value">Non-Veg</span>
+            <span class="info-value">{{ formatCategory(selectedRestaurant?.category || '') }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Status</span>
+            <span class="info-value">{{ capitalizeStatus(selectedRestaurant?.status || '') }}</span>
           </div>
           <div class="info-item">
             <span class="info-label">Expected Volume</span>
-            <span class="info-value">50kg</span>
+            <span class="info-value">{{ selectedRestaurant?.expectedVolume }}</span>
           </div>
           <div class="info-item">
             <span class="info-label">Agreed Price</span>
-            <span class="info-value">₹35</span>
+            <span class="info-value">₹{{ selectedRestaurant?.agreedPrice }}</span>
+          </div>
+          <div class="info-item" *ngIf="selectedRestaurant?.ifscCode">
+            <span class="info-label">IFSC Code</span>
+            <span class="info-value">{{ selectedRestaurant?.ifscCode }}</span>
           </div>
         </div>
 
         <!-- Edit Profile Button -->
-        <button class="edit-btn">
-         <svg width="19" height="18" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M2.75 15.75H16.25M10.8383 3.98378C10.8383 3.98378 10.8383 5.20975 12.0643 6.43572C13.2902 7.66169 14.5162 7.66169 14.5162 7.66169M5.98972 13.4911L8.56425 13.1233C8.93562 13.0702 9.27977 12.8981 9.54503 12.6329L15.7422 6.43572C16.4193 5.75864 16.4193 4.66087 15.7422 3.98378L14.5162 2.75781C13.8391 2.08073 12.7414 2.08073 12.0643 2.75781L5.86712 8.95497C5.60186 9.22023 5.42979 9.56438 5.37674 9.93575L5.00894 12.5103C4.92721 13.0824 5.4176 13.5728 5.98972 13.4911Z" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-</svg>
+        <button class="edit-btn" (click)="openEditModal()">
           Edit Profile
+          <svg width="19" height="18" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M2.75 15.75H16.25M10.8383 3.98378C10.8383 3.98378 10.8383 5.20975 12.0643 6.43572C13.2902 7.66169 14.5162 7.66169 14.5162 7.66169M5.98972 13.4911L8.56425 13.1233C8.93562 13.0702 9.27977 12.8981 9.54503 12.6329L15.7422 6.43572C16.4193 5.75864 16.4193 4.66087 15.7422 3.98378L14.5162 2.75781C13.8391 2.08073 12.7414 2.08073 12.0643 2.75781L5.86712 8.95497C5.60186 9.22023 5.42979 9.56438 5.37674 9.93575L5.00894 12.5103C4.92721 13.0824 5.41760 13.5728 5.98972 13.4911Z"
+              stroke="white" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
         </button>
       </div>
     </div>
@@ -207,62 +239,60 @@
     <!-- Right Side - Tabs and Details -->
     <div class="right-section">
       <!-- Tabs -->
-   <div class="detail-tabs">
-  <button 
-    class="detail-tab"
-    [ngClass]="{ 'active': activeTab === 'restaurant' }"
-    (click)="activeTab = 'restaurant'">
-    Restaurant Owner Details
-  </button>
-  <button 
-    class="detail-tab"
-    [ngClass]="{ 'active': activeTab === 'order' }"
-    (click)="activeTab = 'order'">
-    Order List
-  </button>
-  <button 
-    class="detail-tab"
-    [ngClass]="{ 'active': activeTab === 'documents' }"
-    (click)="activeTab = 'documents'">
-    Documents
-  </button>
-  <button 
-    class="detail-tab"
-    [ngClass]="{ 'active': activeTab === 'voucher' }"
-    (click)="activeTab = 'voucher'">
-    Voucher
-  </button>
-</div>
+      <div class="detail-tabs">
+        <button class="detail-tab" [ngClass]="{ 'active': activeTab === 'restaurant' }"
+          (click)="activeTab = 'restaurant'">
+          Restaurant Owner Details
+        </button>
+        <button class="detail-tab" [ngClass]="{ 'active': activeTab === 'order' }" (click)="activeTab = 'order'">
+          Order List
+        </button>
+        <button class="detail-tab" [ngClass]="{ 'active': activeTab === 'documents' }"
+          (click)="activeTab = 'documents'">
+          Documents
+        </button>
+        <button class="detail-tab" [ngClass]="{ 'active': activeTab === 'voucher' }" (click)="activeTab = 'voucher'">
+          Voucher
+        </button>
+      </div>
 
       <!-- Tab Content -->
       <div class="tab-content" *ngIf="activeTab === 'restaurant'">
-        
+
         <!-- Restaurant Info Section -->
         <div class="info-section">
           <div class="section-header">
             <h3 class="section-title">Restaurant Info</h3>
-            <button class="edit-icon-btn">
+            <button class="edit-icon-btn" (click)="openEditModal()">
               <img src="assets/svg/pencil.svg">
             </button>
           </div>
           <div class="info-row">
             <div class="info-col">
               <span class="label">Restaurant ID</span>
-              <span class="value">92</span>
+              <span class="value">{{ selectedRestaurant?.id }}</span>
             </div>
             <div class="info-col">
-              <span class="label">Shop Number</span>
-              <span class="value">+91 98979 75064</span>
+              <span class="label">User ID</span>
+              <span class="value">{{ selectedRestaurant?.userId }}</span>
             </div>
           </div>
           <div class="info-row">
             <div class="info-col">
               <span class="label">Address</span>
-              <span class="value">B1 first floor, aasaraan knit street, Pundrychuny-606001</span>
+              <span class="value">{{ selectedRestaurant?.address }}</span>
             </div>
             <div class="info-col">
+              <span class="label">License Number</span>
+              <span class="value">{{ selectedRestaurant?.licenseNumber }}</span>
+            </div>
+          </div>
+          <div class="info-row">
+            <div class="info-col">
               <span class="label">License URL</span>
-              <span class="value license-url">https://demourl.s3.ap-south-1.amazonaws.com/fbo/Mohamed_din_Kumar_1970436054.jpg</span>
+              <span class="value license-url"
+                (click)="downloadDocument({fileName: 'License', url: selectedRestaurant?.licenseUrl || '', size: 0, uploadedAt: ''})">{{
+                selectedRestaurant?.licenseUrl }}</span>
             </div>
           </div>
         </div>
@@ -271,24 +301,25 @@
         <div class="info-section">
           <div class="section-header">
             <h3 class="section-title">Owner Info</h3>
-            <button class="edit-icon-btn">
-               <img src="assets/svg/pencil.svg">
+            <button class="edit-icon-btn" (click)="openEditModal()">
+              <img src="assets/svg/pencil.svg">
             </button>
           </div>
           <div class="info-row">
             <div class="info-col">
               <span class="label">Full Name</span>
-              <span class="value">Aynla</span>
+              <span class="value">{{ selectedRestaurant?.fullName }}</span>
             </div>
             <div class="info-col">
               <span class="label">Email</span>
-              <span class="value">aynla234@gmail.com</span>
+              <span class="value">{{ selectedRestaurant?.email }}</span>
             </div>
           </div>
           <div class="info-row">
             <div class="info-col">
               <span class="label">Contact Number</span>
-              <span class="value">+91 98879 43567</span>
+              <span class="value">{{ formatPhone(selectedRestaurant?.countryCode || '',
+                selectedRestaurant?.contactNumber || '') }}</span>
             </div>
           </div>
         </div>
@@ -297,28 +328,28 @@
         <div class="info-section">
           <div class="section-header">
             <h3 class="section-title">Bank Info</h3>
-            <button class="edit-icon-btn">
-                <img src="assets/svg/pencil.svg">
+            <button class="edit-icon-btn" (click)="openEditModal()">
+              <img src="assets/svg/pencil.svg">
             </button>
           </div>
           <div class="info-row">
             <div class="info-col">
               <span class="label">Account No</span>
-              <span class="value">ICCI91891</span>
+              <span class="value">{{ selectedRestaurant?.accountNo }}</span>
             </div>
             <div class="info-col">
               <span class="label">Bank Name</span>
-              <span class="value">ICICI Bank</span>
+              <span class="value">{{ selectedRestaurant?.bankName }}</span>
             </div>
           </div>
           <div class="info-row">
             <div class="info-col">
-              <span class="label">Branch Name</span>
-              <span class="value">Lamplot</span>
-            </div>
-            <div class="info-col">
               <span class="label">IFSC Code</span>
-              <span class="value">ICICI2345</span>
+              <span class="value">{{ selectedRestaurant?.ifscCode || 'N/A' }}</span>
+            </div>
+            <div class="info-col" *ngIf="selectedRestaurant?.agreedPrice">
+              <span class="label">Agreed Price</span>
+              <span class="value">₹{{ selectedRestaurant?.agreedPrice }}</span>
             </div>
           </div>
         </div>
@@ -326,24 +357,26 @@
       </div>
 
       <!-- Order List Tab Content -->
-   
-<div class="tab-content" *ngIf="activeTab === 'order'" class="order-list-tab-content">
-  <app-oil 
-    [showOnlyTable]="true"
-    [externalOrders]="restaurantOrders">
-  </app-oil>
-</div>
-    
-     <!-- Documents Tab Content -->
-     <div class="tab-content" *ngIf="activeTab === 'documents'">
+
+      <div class="tab-content" *ngIf="activeTab === 'order'" class="order-list-tab-content">
+        <app-oil [showOnlyTable]="true" [externalOrders]="restaurantOrders">
+        </app-oil>
+      </div>
+
+      <!-- Documents Tab Content -->
+      <div class="tab-content" *ngIf="activeTab === 'documents'">
         <div class="documents-section">
           <div class="documents-header">
             <h3 class="documents-title">Documents</h3>
-            <button class="add-document-btn">
+            <button class="add-document-btn" (click)="triggerUpload()">
               <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M12 4.5C12.5523 4.5 13 4.94772 13 5.5V19.5C13 20.0523 12.5523 20.5 12 20.5C11.4477 20.5 11 20.0523 11 19.5V5.5C11 4.94772 11.4477 4.5 12 4.5Z" fill="#A0AEC0"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M4 12.5C4 11.9477 4.44772 11.5 5 11.5H19C19.5523 11.5 20 11.9477 20 12.5C20 13.0523 19.5523 13.5 19 13.5H5C4.44772 13.5 4 13.0523 4 12.5Z" fill="#A0AEC0"/>
-</svg>
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                  d="M12 4.5C12.5523 4.5 13 4.94772 13 5.5V19.5C13 20.0523 12.5523 20.5 12 20.5C11.4477 20.5 11 20.0523 11 19.5V5.5C11 4.94772 11.4477 4.5 12 4.5Z"
+                  fill="#A0AEC0" />
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                  d="M4 12.5C4 11.9477 4.44772 11.5 5 11.5H19C19.5523 11.5 20 11.9477 20 12.5C20 13.0523 19.5523 13.5 19 13.5H5C4.44772 13.5 4 13.0523 4 12.5Z"
+                  fill="#A0AEC0" />
+              </svg>
 
             </button>
           </div>
@@ -357,18 +390,21 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td class="document-name-cell">CU Anbu_2_1.pdf</td>
+                <tr *ngFor="let doc of hubDocuments">
+                  <td class="document-name-cell">{{ doc.fileName }}</td>
                   <td class="action-cell">
                     <div class="action-buttons">
-                      <button class="icon-btn download-btn" title="Download">
+                      <button class="icon-btn download-btn" (click)="downloadDocument(doc)" title="Download">
                         <img src="assets/svg/download.svg">
                       </button>
-                      <button class="icon-btn delete-btn" title="Delete">
-                       <img src="assets/svg/delete.svg">
+                      <button class="icon-btn delete-btn" (click)="deleteDocument(doc)" title="Delete">
+                        <img src="assets/svg/delete.svg">
                       </button>
                     </div>
                   </td>
+                </tr>
+                <tr *ngIf="hubDocuments.length === 0">
+                  <td colspan="2" style="text-align: center; color: #999; padding: 1rem;">No documents found</td>
                 </tr>
               </tbody>
             </table>
@@ -376,179 +412,236 @@
         </div>
       </div>
 
-      
+
 
       <!-- Voucher Tab Content -->
-    <!-- Voucher Tab Content -->
-<div class="tab-content" *ngIf="activeTab === 'voucher'">
-  <div class="voucher-list">
-    <!-- Voucher Item 1 -->
-    <div class="voucher-item">
-      <div class="voucher-header">
-        <div class="voucher-order-info">
-          <span class="order-label">Order ID:</span>
-          <span class="order-id">04</span>
-        </div>
-        <span class="voucher-date">03/07/2025</span>
-      </div>
+      <!-- Voucher Tab Content -->
+      <div class="tab-content" *ngIf="activeTab === 'voucher'">
+        <div class="voucher-list">
+          <div *ngIf="vouchers.length === 0" style="text-align: center; color: #999; padding: 2rem;">
+            No vouchers found.
+          </div>
+          <!-- Voucher Item -->
+          <div class="voucher-item" *ngFor="let voucher of vouchers">
+            <div class="voucher-header">
+              <div class="voucher-order-info">
+                <span class="order-label">Order ID:</span>
+                <span class="order-id">{{ voucher.id }}</span>
+              </div>
+              <span class="voucher-date">{{ voucher.pickupDate }}</span>
+            </div>
 
-      <div class="voucher-details">
-        <div class="voucher-row">
-          <div class="voucher-col">
-            <span class="voucher-label">User Name:</span>
-            <span class="voucher-value">Saravanan</span>
-          </div>
-          <div class="voucher-col">
-            <span class="voucher-label">Type:</span>
-            <span class="voucher-value">Sunflower Oil</span>
-          </div>
-        </div>
+            <div class="voucher-details">
+              <div class="voucher-row">
+                <div class="voucher-col">
+                  <span class="voucher-label">User Name:</span>
+                  <span class="voucher-value">{{ voucher.userName }}</span>
+                </div>
+                <div class="voucher-col">
+                  <span class="voucher-label">Type:</span>
+                  <span class="voucher-value">{{ voucher.type }}</span>
+                </div>
+              </div>
 
-        <div class="voucher-row">
-          <div class="voucher-col">
-            <span class="voucher-label">Quantity:</span>
-            <span class="voucher-value">650kg</span>
-          </div>
-          <div class="voucher-col">
-            <span class="voucher-label">Status:</span>
-            <span class="voucher-value">Acknowledged</span>
-          </div>
-        </div>
+              <div class="voucher-row">
+                <div class="voucher-col">
+                  <span class="voucher-label">Quantity:</span>
+                  <span class="voucher-value">{{ voucher.quantity }}</span>
+                </div>
+                <div class="voucher-col">
+                  <span class="voucher-label">Status:</span>
+                  <span class="voucher-value">{{ voucher.status }}</span>
+                </div>
+              </div>
 
-        <div class="voucher-row">
-          <div class="voucher-col">
-            <span class="voucher-label">User Contact:</span>
-            <span class="voucher-value">+917958 66850</span>
-          </div>
-          <div class="voucher-col">
-            <span class="voucher-label">Address:</span>
-            <span class="voucher-value">97, first floor, saravanan kovil street, Pondicherry-605001</span>
-          </div>
-        </div>
+              <div class="voucher-row">
+                <div class="voucher-col">
+                  <span class="voucher-label">User Contact:</span>
+                  <span class="voucher-value">{{ voucher.userContact }}</span>
+                </div>
+                <div class="voucher-col">
+                  <span class="voucher-label">Address:</span>
+                  <span class="voucher-value">{{ voucher.address }}</span>
+                </div>
+              </div>
 
-        <div class="voucher-row">
-          <div class="voucher-col">
-            <span class="voucher-label">Pickup Date:</span>
-            <span class="voucher-value">03/07/2025</span>
-          </div>
-          <div class="voucher-col">
-            <span class="voucher-label">Amount:</span>
-            <span class="voucher-value">₹22,500.0</span>
-          </div>
-        </div>
+              <div class="voucher-row">
+                <div class="voucher-col">
+                  <span class="voucher-label">Pickup Date:</span>
+                  <span class="voucher-value">{{ voucher.pickupDate }}</span>
+                </div>
+                <div class="voucher-col">
+                  <span class="voucher-label">Amount:</span>
+                  <span class="voucher-value">₹{{ voucher.amount }}</span>
+                </div>
+              </div>
 
-        <div class="voucher-row">
-          <div class="voucher-col">
-            <span class="voucher-label">Time:</span>
-            <span class="voucher-value">23:51:03</span>
-          </div>
-          <div class="voucher-col"></div>
-        </div>
-      </div>
+              <div class="voucher-row" *ngIf="voucher.time">
+                <div class="voucher-col">
+                  <span class="voucher-label">Time:</span>
+                  <span class="voucher-value">{{ voucher.time }}</span>
+                </div>
+                <div class="voucher-col"></div>
+              </div>
+            </div>
 
-      <div class="voucher-actions">
-        <button class="export-btn pdf-btn">
-          <img src="assets/svg/pdf.svg">
-          PDF
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M8 10.6667V2M8 10.6667L10.6667 8M8 10.6667L5.33333 8M2 10.6667V12C2 12.7364 2.59695 13.3333 3.33333 13.3333H12.6667C13.403 13.3333 14 12.7364 14 12V10.6667" stroke="#FF5C5C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-        <button class="export-btn excel-btn">
-        <img src="assets/svg/excel.svg">
-          Excel
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M8 10.6667V2M8 10.6667L10.6667 8M8 10.6667L5.33333 8M2 10.6667V12C2 12.7364 2.59695 13.3333 3.33333 13.3333H12.6667C13.403 13.3333 14 12.7364 14 12V10.6667" stroke="#00A86B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-      </div>
-    </div>
-
-    <!-- Voucher Item 2 -->
-    <div class="voucher-item">
-      <div class="voucher-header">
-        <div class="voucher-order-info">
-          <span class="order-label">Order ID:</span>
-          <span class="order-id">09</span>
-        </div>
-        <span class="voucher-date">04/07/2025</span>
-      </div>
-
-      <div class="voucher-details">
-        <div class="voucher-row">
-          <div class="voucher-col">
-            <span class="voucher-label">User Name:</span>
-            <span class="voucher-value">Ishwarya</span>
+            <div class="voucher-actions">
+              <button class="export-btn pdf-btn" (click)="downloadVoucher(voucher)">
+                <img src="assets/svg/pdf.svg">
+                PDF
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M8 10.6667V2M8 10.6667L10.6667 8M8 10.6667L5.33333 8M2 10.6667V12C2 12.7364 2.59695 13.3333 3.33333 13.3333H12.6667C13.403 13.3333 14 12.7364 14 12V10.6667"
+                    stroke="#FF5C5C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </button>
+            </div>
           </div>
-          <div class="voucher-col">
-            <span class="voucher-label">Type:</span>
-            <span class="voucher-value">Coconut Oil</span>
-          </div>
-        </div>
-
-        <div class="voucher-row">
-          <div class="voucher-col">
-            <span class="voucher-label">Quantity:</span>
-            <span class="voucher-value">9kg</span>
-          </div>
-          <div class="voucher-col">
-            <span class="voucher-label">Status:</span>
-            <span class="voucher-value">Acknowledged</span>
-          </div>
-        </div>
-
-        <div class="voucher-row">
-          <div class="voucher-col">
-            <span class="voucher-label">User Contact:</span>
-            <span class="voucher-value">+917958 66850</span>
-          </div>
-          <div class="voucher-col">
-            <span class="voucher-label">Address:</span>
-            <span class="voucher-value">97, first floor, saravanan kovil street, Pondicherry-605001</span>
-          </div>
-        </div>
-
-        <div class="voucher-row">
-          <div class="voucher-col">
-            <span class="voucher-label">Pickup Date:</span>
-            <span class="voucher-value">04/07/2025</span>
-          </div>
-          <div class="voucher-col">
-            <span class="voucher-label">Amount:</span>
-            <span class="voucher-value">₹255.0</span>
-          </div>
-        </div>
-
-        <div class="voucher-row">
-          <div class="voucher-col">
-            <span class="voucher-label">Time:</span>
-            <span class="voucher-value">09:53:24</span>
-          </div>
-          <div class="voucher-col"></div>
         </div>
       </div>
-
-      <div class="voucher-actions">
-        <button class="export-btn pdf-btn">
-          <img src="assets/svg/pdf.svg">
-          PDF
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M8 10.6667V2M8 10.6667L10.6667 8M8 10.6667L5.33333 8M2 10.6667V12C2 12.7364 2.59695 13.3333 3.33333 13.3333H12.6667C13.403 13.3333 14 12.7364 14 12V10.6667" stroke="#FF5C5C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-        <button class="export-btn excel-btn">
-         <img src="assets/svg/excel.svg">
-          Excel
-           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M8 10.6667V2M8 10.6667L10.6667 8M8 10.6667L5.33333 8M2 10.6667V12C2 12.7364 2.59695 13.3333 3.33333 13.3333H12.6667C13.403 13.3333 14 12.7364 14 12V10.6667" stroke="#00A86B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
 
     </div>
   </div>
 </div>
 
+<!-- Edit Profile Modal -->
+<div class="modal-overlay" *ngIf="showEditModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Edit Restaurant Profile</h3>
+      <button class="close-btn" (click)="closeEditModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" [(ngModel)]="editingRestaurant.fullName">
+        </div>
+        <div class="form-group">
+          <label>Restaurant Name</label>
+          <input type="text" [(ngModel)]="editingRestaurant.restaurantName">
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <select [(ngModel)]="editingRestaurant.category">
+            <option value="non_veg">Non-Veg</option>
+            <option value="veg">Veg</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" [(ngModel)]="editingRestaurant.email">
+        </div>
+        <div class="form-group">
+          <label>Contact Number</label>
+          <input type="text" [(ngModel)]="editingRestaurant.contactNumber">
+        </div>
+        <div class="form-group">
+          <label>License Number</label>
+          <input type="text" [(ngModel)]="editingRestaurant.licenseNumber">
+        </div>
+        <div class="form-group">
+          <label>Address</label>
+          <input type="text" [(ngModel)]="editingRestaurant.address">
+        </div>
+        <div class="form-group">
+          <label>Bank Name</label>
+          <input type="text" [(ngModel)]="editingRestaurant.bankName">
+        </div>
+        <div class="form-group">
+          <label>Account No</label>
+          <input type="text" [(ngModel)]="editingRestaurant.accountNo">
+        </div>
+        <div class="form-group">
+          <label>IFSC Code</label>
+          <input type="text" [(ngModel)]="editingRestaurant.ifscCode">
+        </div>
+        <div class="form-group">
+          <label>Expected Volume</label>
+          <input type="text" [(ngModel)]="editingRestaurant.expectedVolume">
+        </div>
+        <div class="form-group">
+          <label>Agreed Price</label>
+          <input type="text" [(ngModel)]="editingRestaurant.agreedPrice">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="closeEditModal()">Cancel</button>
+      <button class="btn-primary" (click)="saveProfile()" [disabled]="isSaving">
+        {{ isSaving ? 'Saving...' : 'Save Changes' }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Restaurant Modal -->
+<div class="modal-overlay" *ngIf="showAddModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Add New Restaurant</h3>
+      <button class="close-btn" (click)="closeAddModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" [(ngModel)]="newRestaurant.fullName" placeholder="Enter full name">
+        </div>
+        <div class="form-group">
+          <label>Restaurant Name</label>
+          <input type="text" [(ngModel)]="newRestaurant.restaurantName" placeholder="Enter restaurant name">
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <select [(ngModel)]="newRestaurant.category">
+            <option value="non_veg">Non-Veg</option>
+            <option value="veg">Veg</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" [(ngModel)]="newRestaurant.email" placeholder="Enter email">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" [(ngModel)]="newRestaurant.password" placeholder="Enter password">
+        </div>
+        <div class="form-group">
+          <label>Contact Number</label>
+          <input type="text" [(ngModel)]="newRestaurant.contactNumber" placeholder="Enter contact number">
+        </div>
+        <div class="form-group">
+          <label>License Number</label>
+          <input type="text" [(ngModel)]="newRestaurant.licenseNumber" placeholder="Enter license number">
+        </div>
+        <div class="form-group">
+          <label>Bank Name</label>
+          <input type="text" [(ngModel)]="newRestaurant.bankName" placeholder="Enter bank name">
+        </div>
+        <div class="form-group">
+          <label>Account No</label>
+          <input type="text" [(ngModel)]="newRestaurant.accountNo" placeholder="Enter account number">
+        </div>
+        <div class="form-group">
+          <label>IFSC Code</label>
+          <input type="text" [(ngModel)]="newRestaurant.ifscCode" placeholder="Enter IFSC code">
+        </div>
+        <div class="form-group">
+          <label>Expected Volume</label>
+          <input type="text" [(ngModel)]="newRestaurant.expectedVolume" placeholder="Enter expected volume">
+        </div>
+        <div class="form-group">
+          <label>Agreed Price</label>
+          <input type="text" [(ngModel)]="newRestaurant.agreedPrice" placeholder="Enter agreed price">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="closeAddModal()">Cancel</button>
+      <button class="btn-primary" (click)="addRestaurant()" [disabled]="isAdding">
+        {{ isAdding ? 'Adding...' : 'Add Restaurant' }}
+      </button>
+    </div>
+  </div>
+</div>

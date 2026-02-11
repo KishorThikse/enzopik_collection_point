@@ -1,23 +1,40 @@
 <div class="oil-orders-container">
-  <!-- Hide header when showOnlyTable is true -->
   <div class="header" *ngIf="!showOnlyTable">
-    <h2>Oil Orders</h2>
-    <p class="subtitle">Track orders health and progress across teams.</p>
+    <div class="header-content">
+      <div>
+        <h2>Oil Orders</h2>
+        <p class="subtitle">Track orders health and progress across teams.</p>
+      </div>
+      <button class="request-btn" (click)="openRequestModal()">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 3.75V14.25M3.75 9H14.25" stroke="white" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+        Request Oil
+      </button>
+    </div>
   </div>
 
   <div class="table-wrapper">
-    <!-- Hide search and filter when showOnlyTable is true -->
+    <!-- ... (rest of the table controls remain same) ... -->
     <div class="table-controls" *ngIf="!showOnlyTable">
       <div class="search-box">
         <span class="search-icon"><img src="assets/svg/search.svg"></span>
-        <input type="text" placeholder="Representative Name" [(ngModel)]="searchText">
+        <input type="text" placeholder="Restaurant Name" [(ngModel)]="searchText" (ngModelChange)="applyFilter()">
       </div>
       <div class="filter-spacer"></div>
       <button class="filter-btn">Filter <span class="filter-icon"><img src="assets/svg/filter.svg"></span></button>
     </div>
 
-    <!-- Always show the table -->
-    <div class="table-container">
+    <div *ngIf="isLoading && !showOnlyTable" class="table-state">
+      Loading orders...
+    </div>
+
+    <div *ngIf="error && !showOnlyTable" class="table-state error">
+      {{ error }}
+    </div>
+
+    <div class="table-container" *ngIf="!isLoading && !error">
       <table class="orders-table">
         <thead>
           <tr>
@@ -33,22 +50,22 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let order of orders">
-            <td data-label="Representative Name">
+          <tr *ngFor="let order of paginatedOrders">
+            <td data-label="Restaurant Name">
               <span class="expand-icon"></span>
-              <span>{{ order.repName }}</span>
+              <span>{{ order.restaurantName }}</span>
             </td>
             <td data-label="Oil Type">{{ order.oilType }}</td>
-            <td data-label="Country">{{ order.country }}</td>
+            <td data-label="Quantity">{{ order.quantity }}</td>
             <td data-label="Amount">₹{{ order.amount }}</td>
-            <td data-label="Ordered By">
+            <td data-label="Assigned To">
               <div class="user-info">
-                <img [src]="order.orderedBy.avatar" [alt]="order.orderedBy.name" class="avatar">
-                <span>{{ order.orderedBy.name }}</span>
+                <img [src]="order.assignedTo.avatar" [alt]="order.assignedTo.name" class="avatar">
+                <span>{{ order.assignedTo.name }}</span>
               </div>
             </td>
             <td data-label="Date">{{ order.date }}</td>
-            <td data-label="Unit Name">{{ order.unitName }}</td>
+            <td data-label="Hub Name">{{ order.hubName }}</td>
             <td data-label="Status">
               <span class="status-badge" [ngClass]="getStatusClass(order.status)">
                 {{ order.status }}
@@ -57,24 +74,111 @@
             <td data-label="View" class="view-cell">
               <button class="view-btn">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect width="24" height="24" rx="5" fill="white"/>
-                  <rect x="0.5" y="0.5" width="23" height="23" rx="4.5" stroke="#020204" stroke-opacity="0.08"/>
-                  <path d="M10.3999 16L14.3999 12L10.3999 8" stroke="#625F6E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <rect width="24" height="24" rx="5" fill="white" />
+                  <rect x="0.5" y="0.5" width="23" height="23" rx="4.5" stroke="#020204" stroke-opacity="0.08" />
+                  <path d="M10.3999 16L14.3999 12L10.3999 8" stroke="#625F6E" stroke-width="1.5" stroke-linecap="round"
+                    stroke-linejoin="round" />
                 </svg>
               </button>
             </td>
           </tr>
+
+          <tr *ngIf="!isLoading && filteredOrders.length === 0">
+            <td colspan="9" class="no-data-cell">
+              No orders found.
+            </td>
+          </tr>
+
         </tbody>
       </table>
     </div>
 
-    <!-- Hide pagination when showOnlyTable is true -->
-    <div class="pagination" *ngIf="!showOnlyTable">
-      <span class="page-info">Page 1 of 10</span>
+    <div class="table-footer">
+      <span class="pagination-info">Page {{ currentPage }} of {{ totalPages }}</span>
       <div class="pagination-controls">
-        <button class="pagination-btn">Previous</button>
-        <button class="pagination-btn">Next</button>
+        <button class="pagination-btn" (click)="previousPage()">
+          Previous
+        </button>
+        <button class="pagination-btn" (click)="nextPage()">
+          Next
+        </button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Request Oil Modal -->
+<div class="modal-overlay" *ngIf="showRequestModal" (click)="closeRequestModal()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Request Oil Sale</h3>
+      <button class="close-btn" (click)="closeRequestModal()">&times;</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Oil Type *</label>
+          <select [(ngModel)]="newRequest.type">
+            <option value="">Select Type</option>
+            <option value="Used Cooking Oil">Used Cooking Oil</option>
+            <option value="Sunflower Oil">Sunflower Oil</option>
+            <option value="Palm Oil">Palm Oil</option>
+            <option value="Coconut Oil">Coconut Oil</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Quantity (KG) *</label>
+          <input type="number" [(ngModel)]="newRequest.quantity" placeholder="Enter quantity">
+        </div>
+
+        <div class="form-group">
+          <label>Payment Method</label>
+          <select [(ngModel)]="newRequest.paymentMethod">
+            <option value="Cash">Cash</option>
+            <option value="Online">Online</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Date Range *</label>
+          <input type="text" [(ngModel)]="newRequest.dateRange" placeholder="e.g. 2024-05-20 to 2024-05-25">
+        </div>
+
+        <div class="form-group full-width">
+          <label>Pickup Address *</label>
+          <textarea [(ngModel)]="newRequest.address" placeholder="Enter full address" rows="2"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Reason</label>
+          <input type="text" [(ngModel)]="newRequest.reason" placeholder="Optional reason">
+        </div>
+
+        <div class="form-group">
+          <label>Counter Unit Price (if any)</label>
+          <input type="text" [(ngModel)]="newRequest.counterUnitPrice" placeholder="Optional price">
+        </div>
+
+        <div class="form-group full-width">
+          <label>Remarks</label>
+          <textarea [(ngModel)]="newRequest.remarks" placeholder="Optional remarks" rows="2"></textarea>
+        </div>
+      </div>
+
+      <div class="message-area">
+        <div class="error-msg" *ngIf="requestError">{{ requestError }}</div>
+        <div class="success-msg" *ngIf="requestSuccess">{{ requestSuccess }}</div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancel" (click)="closeRequestModal()" [disabled]="isSubmitting">Cancel</button>
+      <button class="btn-submit" (click)="submitOilRequest()" [disabled]="isSubmitting">
+        <span *ngIf="!isSubmitting">Submit Request</span>
+        <span *ngIf="isSubmitting">Submitting...</span>
+      </button>
     </div>
   </div>
 </div>

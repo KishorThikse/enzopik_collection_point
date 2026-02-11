@@ -6,7 +6,7 @@ import { AuthService } from '../services/auth.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // Get the auth token from the service
@@ -26,9 +26,8 @@ export class AuthInterceptor implements HttpInterceptor {
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
           // Unauthorized - token might be expired
-          this.authService.logout();
+          this.authService.logout(true); // Don't call API again to avoid loops
           // You can redirect to login page here if needed
-          // this.router.navigate(['/login']);
         }
         return throwError(() => error);
       })
